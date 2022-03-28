@@ -12,10 +12,8 @@ import io.pleo.antaeus.models.Customer
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
 import io.pleo.antaeus.models.Money
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greater
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class AntaeusDal(private val db: Database) {
@@ -79,5 +77,49 @@ class AntaeusDal(private val db: Database) {
         }
 
         return fetchCustomer(id)
+    }
+
+    fun fetchInvoicesByStatus(status: InvoiceStatus = InvoiceStatus.PENDING): List<Invoice> {
+        return transaction(db) {
+            InvoiceTable
+                .select { InvoiceTable.status.eq(status.toString()) }
+                .map { it.toInvoice() }
+        }
+    }
+
+    fun countInvoiceByStatus(status: InvoiceStatus = InvoiceStatus.PENDING):Int{
+        // transaction(db) runs the internal query as a new database transaction.
+        return transaction(db) {
+            //count unpaid invoices
+            InvoiceTable
+                .select { InvoiceTable.status.eq(status.toString())}
+                .count()
+        }
+    }
+
+
+    fun fetchInvoiceInBatchesByStatus(lastInvoiceId:Int,limit:Int=1,status: InvoiceStatus = InvoiceStatus.PENDING): List<Invoice> {
+        // transaction(db) runs the internal query as a new database transaction.
+        return transaction(db) {
+            //fetch unpaid invoices
+            var query = InvoiceTable
+                .select {InvoiceTable.status.eq(status.toString()) }
+
+            //if after invoice id is returned, select results after invoice id
+            if (lastInvoiceId > 0){
+                query.andWhere {InvoiceTable.id.greater(lastInvoiceId)  }
+            }
+
+            query.limit(limit)
+                .map { it.toInvoice() }
+        }
+    }
+
+    fun updateInvoiceStatus(invoiceId: Int, status: InvoiceStatus) {
+        transaction(db) {
+            InvoiceTable.update({ InvoiceTable.id eq invoiceId }) {
+                it[InvoiceTable.status] = status.toString()
+            }
+        }
     }
 }
