@@ -20,4 +20,5 @@ class InvoiceServiceTest {
             invoiceService.fetch(404)
         }
     }
+
 }
