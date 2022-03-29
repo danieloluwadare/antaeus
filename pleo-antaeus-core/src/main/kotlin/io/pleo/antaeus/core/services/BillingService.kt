@@ -27,7 +27,7 @@ class BillingService(
         while (batchService.nextBatchExist()) {
             val invoicesList: List<Invoice> = batchService.getNextBatch()
             logger.info {">> invoice batch size ==> ${invoicesList.size}) .<<"}
-            val requestAdapter = BillingRequestAdapterImpl(invoicesList,paymentProvider,invoiceService,mapOfAfterStateChangeService);
+            val requestAdapter = BillingRequestAdapterImpl(invoicesList,paymentProvider,invoiceService,mapOfAfterStateChangeService,15);
             billingProcessor.process(requestAdapter);
         }
     }

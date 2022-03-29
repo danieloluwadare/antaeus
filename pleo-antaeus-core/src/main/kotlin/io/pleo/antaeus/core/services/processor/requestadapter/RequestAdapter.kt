@@ -11,4 +11,5 @@ interface RequestAdapter {
     fun getPaymentProvider(): PaymentProvider
     fun getInvoiceService() : InvoiceService
     fun getAfterStateChangeService(): Map<String, AfterStateChangeService>
+    fun getMaximumRetryCount():Int
 }

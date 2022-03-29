@@ -7,10 +7,12 @@ import io.pleo.antaeus.models.Invoice
 import java.util.LinkedList
 import java.util.Queue
 
-data class BillingProcessRequest(val billingRequestAdapterImpl: RequestAdapter, val state: BillProcessorFlowState){
-    private val queue: Queue<InvoiceProcessorAdapter> = LinkedList<InvoiceProcessorAdapter>()
+data class BillingProcessRequest(val billingRequestAdapterImpl: RequestAdapter, var state: BillProcessorFlowState){
+    val queue: Queue<InvoiceProcessorAdapter> = LinkedList<InvoiceProcessorAdapter>()
     init {
         queue.addAll(billingRequestAdapterImpl.getInvoicesProcessorAdapters())
     }
 
+    //computed values
+    lateinit var currentInvoiceProcess:InvoiceProcessorAdapter
 }

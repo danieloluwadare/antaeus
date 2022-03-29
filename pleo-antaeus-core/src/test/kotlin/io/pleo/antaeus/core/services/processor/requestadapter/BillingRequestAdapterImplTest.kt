@@ -27,7 +27,7 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map)
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
 
         assertEquals(invoiceList.size, requestAdapterImpl.getInvoicesProcessorAdapters().size)
     }
@@ -43,7 +43,7 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map)
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
 
         assertEquals(invoiceService, requestAdapterImpl.getInvoiceService())
     }
@@ -59,7 +59,7 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map)
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
 
         assertEquals(paymentProvider, requestAdapterImpl.getPaymentProvider())
     }
@@ -75,9 +75,25 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map)
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
 
         assertEquals(map, requestAdapterImpl.getAfterStateChangeService())
+    }
+
+    @Test
+    fun `when maximumRetryCount is passed into the constructor getMaximumRetryCount must equal maximumRetryCount`() {
+        val invoiceList = ArrayList<Invoice>()
+        for (i in 1..10) invoiceList.add(createInvoice(InvoiceStatus.PENDING))
+
+        val invoiceService = mockk<InvoiceService>()
+        val paymentProvider = mockk<PaymentProvider>()
+        val afterStateChangeService = mockk<AfterStateChangeService>()
+        val map = HashMap<String, AfterStateChangeService>()
+        map["test"] = afterStateChangeService;
+
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
+
+        assertEquals(10, requestAdapterImpl.getMaximumRetryCount())
     }
 
     private fun createInvoice(status: InvoiceStatus): Invoice {
