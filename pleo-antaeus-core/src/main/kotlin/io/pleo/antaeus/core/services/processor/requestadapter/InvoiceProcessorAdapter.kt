@@ -1,4 +1,4 @@
-package io.pleo.antaeus.core.services.processor
+package io.pleo.antaeus.core.services.processor.requestadapter
 
 import io.pleo.antaeus.models.Invoice
 
