@@ -5,11 +5,10 @@ import io.pleo.antaeus.core.services.AfterStateChangeService
 import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.models.Invoice
 
-class BillingRequestAdapterImpl(
-    invoicesList:List<Invoice>,
-    private val paymentProvider: PaymentProvider,
-    private val invoiceService: InvoiceService,
-    private val afterStateChangeService: AfterStateChangeService
+class BillingRequestAdapterImpl(private val invoicesList:List<Invoice>,
+                                private val paymentProvider: PaymentProvider,
+                                private val invoiceService: InvoiceService,
+                                private val mapOfAfterStateChangeService : Map<String, AfterStateChangeService>
                                 ) : RequestAdapter {
     private val invoiceProcessorList = ArrayList<InvoiceProcessorAdapter>()
 
@@ -29,7 +28,7 @@ class BillingRequestAdapterImpl(
         return invoiceService
     }
 
-    override fun getAfterStateChangeService(): AfterStateChangeService {
-        return afterStateChangeService;
+    override fun getAfterStateChangeService(): Map<String, AfterStateChangeService> {
+        return mapOfAfterStateChangeService;
     }
 }

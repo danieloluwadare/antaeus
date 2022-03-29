@@ -24,8 +24,10 @@ class BillingRequestAdapterImplTest{
         val invoiceService = mockk<InvoiceService>()
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
+        val map = HashMap<String, AfterStateChangeService>()
+        map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,afterStateChangeService)
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map)
 
         assertEquals(invoiceList.size, requestAdapterImpl.getInvoicesProcessorAdapters().size)
     }
@@ -38,8 +40,10 @@ class BillingRequestAdapterImplTest{
         val invoiceService = mockk<InvoiceService>()
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
+        val map = HashMap<String, AfterStateChangeService>()
+        map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,afterStateChangeService)
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map)
 
         assertEquals(invoiceService, requestAdapterImpl.getInvoiceService())
     }
@@ -52,8 +56,10 @@ class BillingRequestAdapterImplTest{
         val invoiceService = mockk<InvoiceService>()
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
+        val map = HashMap<String, AfterStateChangeService>()
+        map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,afterStateChangeService)
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map)
 
         assertEquals(paymentProvider, requestAdapterImpl.getPaymentProvider())
     }
@@ -66,10 +72,12 @@ class BillingRequestAdapterImplTest{
         val invoiceService = mockk<InvoiceService>()
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
+        val map = HashMap<String, AfterStateChangeService>()
+        map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,afterStateChangeService)
+        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map)
 
-        assertEquals(afterStateChangeService, requestAdapterImpl.getAfterStateChangeService())
+        assertEquals(map, requestAdapterImpl.getAfterStateChangeService())
     }
 
     private fun createInvoice(status: InvoiceStatus): Invoice {
