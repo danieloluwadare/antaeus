@@ -8,7 +8,7 @@ import io.pleo.antaeus.models.BillProcessorFlowState
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class ValidateMaximumNumberRetriesExceededProcessorStateImplTest{
+class ValidateMaximumNumberRetriesNotExceededProcessorStateImplTest{
 
     @Test
     fun `get Name Equals START_STATE`() {
