@@ -16,7 +16,7 @@ class MaximumNumberRetriesExceededProcessorStateImpl : ProcessorState {
         val invoiceService = request.billingRequestAdapterImpl.getInvoiceService()
         val mapOfAfterStateChangeService = request.billingRequestAdapterImpl.getAfterStateChangeService()
 
-        logger.info { "invoice(${request.currentInvoiceProcess.getInvoice().id}) exceeded Maximum Retries." }
+        logger.info { "invoice(${request.currentInvoiceProcess.getInvoice().id}) exceeded Maximum Retries with retry count of ==> ${request.currentInvoiceProcess.getCounter()}." }
         logger.info { "About Update invoice status(${request.currentInvoiceProcess.getInvoice().id}) to Failed." }
 
         invoiceService.updateInvoiceStatus(request.currentInvoiceProcess.getInvoice().id, InvoiceStatus.FAILED)

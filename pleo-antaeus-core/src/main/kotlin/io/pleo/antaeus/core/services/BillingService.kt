@@ -21,11 +21,14 @@ class BillingService(
         val total : Int = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
         logger.info { ">> invoices total size ==> (${total}) .<<" }
         val batchService : BatchService = InvoiceBatchServiceImpl(invoiceService, total,20)
+        var batchCount =1
         while (batchService.nextBatchExist()) {
             val invoicesList: List<Invoice> = batchService.getNextBatch()
             logger.info {">> invoice batch size ==> ${invoicesList.size}) .<<"}
-            val requestAdapter = BillingRequestAdapterImpl(invoicesList,paymentProvider,invoiceService,mapOfAfterStateChangeService,15);
+            logger.info { ">> Begin Execution of BATCH NUMBER $batchCount <<" }
+            val requestAdapter = BillingRequestAdapterImpl(invoicesList,paymentProvider,invoiceService,mapOfAfterStateChangeService,1);
             billingProcessor.process(requestAdapter);
+            batchCount++
         }
     }
 // TODO - Add code e.g. here

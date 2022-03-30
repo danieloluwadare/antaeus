@@ -16,6 +16,7 @@ class BillingProcessorImpl(private val map: Map<String,ProcessorState>) : Billin
             val state = map[request.state.name]
             state?.handleRequest(request);
         }
+        logger.info { "Done with Billing Processor" }
     }
 
 }
