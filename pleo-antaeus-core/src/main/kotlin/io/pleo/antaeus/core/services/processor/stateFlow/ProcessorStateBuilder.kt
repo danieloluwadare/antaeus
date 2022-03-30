@@ -1,4 +1,4 @@
-package io.pleo.antaeus.core.services.processor.statechange
+package io.pleo.antaeus.core.services.processor.stateFlow
 
 class ProcessorStateBuilder {
 

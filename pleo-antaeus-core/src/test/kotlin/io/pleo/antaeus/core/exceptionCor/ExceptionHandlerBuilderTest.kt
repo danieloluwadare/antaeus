@@ -27,7 +27,7 @@ class ExceptionHandlerBuilderTest {
 
     @Test
     fun `listOfExceptionHandlers must contain ExceptionHandler with order as 4`() {
-        assertEquals(3, listOfExceptionHandlers.successor?.successor?.successor?.getOrder())
+        assertEquals(4, listOfExceptionHandlers.successor?.successor?.successor?.getOrder())
     }
 
 }

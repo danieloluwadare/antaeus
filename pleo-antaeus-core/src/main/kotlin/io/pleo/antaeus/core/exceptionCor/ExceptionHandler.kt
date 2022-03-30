@@ -1,6 +1,6 @@
 package io.pleo.antaeus.core.cor
 
-import io.pleo.antaeus.core.services.processor.statechange.BillingProcessRequest
+import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
 
 abstract class ExceptionHandler {
     var successor: ExceptionHandler? = null

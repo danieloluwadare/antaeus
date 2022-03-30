@@ -7,7 +7,7 @@ import io.pleo.antaeus.core.exceptions.NetworkException
 import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapter
 import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapterImpl
 import io.pleo.antaeus.core.services.processor.requestadapter.RequestAdapter
-import io.pleo.antaeus.core.services.processor.statechange.BillingProcessRequest
+import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
 import io.pleo.antaeus.models.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

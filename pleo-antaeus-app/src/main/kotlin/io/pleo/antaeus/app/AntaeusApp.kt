@@ -14,7 +14,7 @@ import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.core.services.CustomerService
 import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.core.services.processor.BillingProcessorImpl
-import io.pleo.antaeus.core.services.processor.statechange.ProcessorStateBuilder
+import io.pleo.antaeus.core.services.processor.stateFlow.ProcessorStateBuilder
 import io.pleo.antaeus.data.AntaeusDal
 import io.pleo.antaeus.data.CustomerTable
 import io.pleo.antaeus.data.InvoiceTable
@@ -74,7 +74,7 @@ fun main() {
     val mapOfAfterStateChangeService =
         AfterStateChangeHandlerFactory.build(exceptionHandler = exceptionHandler)
 
-    // Build a Map of ProcessorState
+    // Build a Map of BiProcessorState
     val mapOfProcessorState = ProcessorStateBuilder.buildMap()
 
     // Inject Map of ProcessorState into Billing Processor

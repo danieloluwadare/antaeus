@@ -1,7 +1,7 @@
 package io.pleo.antaeus.core.cor
 
 import io.pleo.antaeus.core.exceptions.CustomerNotFoundException
-import io.pleo.antaeus.core.services.processor.statechange.BillingProcessRequest
+import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
 import mu.KotlinLogging
 
 /**

@@ -1,4 +1,4 @@
-package io.pleo.antaeus.core.services.processor.statechange
+package io.pleo.antaeus.core.services.processor.stateFlow
 
 import io.pleo.antaeus.models.BillProcessorFlowState
 import org.junit.jupiter.api.Assertions.assertTrue

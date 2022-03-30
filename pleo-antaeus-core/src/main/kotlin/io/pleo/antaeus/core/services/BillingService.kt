@@ -20,7 +20,7 @@ class BillingService(
     fun initiate() {
         val total: Int = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
         logger.info { ">> invoices total size ==> (${total}) .<<" }
-        val batchService: BatchService =
+        val batchService =
             InvoiceBatchServiceImpl(invoiceService = invoiceService, total = total, limit = 20)
         var batchCount = 1
         while (batchService.nextBatchExist()) {
@@ -38,5 +38,4 @@ class BillingService(
             batchCount++
         }
     }
-// TODO - Add code e.g. here
 }

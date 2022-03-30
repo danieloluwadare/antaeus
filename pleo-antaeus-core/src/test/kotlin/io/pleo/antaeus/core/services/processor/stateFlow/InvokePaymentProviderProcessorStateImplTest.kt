@@ -1,4 +1,4 @@
-package io.pleo.antaeus.core.services.processor.statechange
+package io.pleo.antaeus.core.services.processor.stateFlow
 
 import io.mockk.every
 import io.mockk.mockk
@@ -63,6 +63,7 @@ class InvokePaymentProviderProcessorStateImplTest {
 
         val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
             every { getInvoice() } returns invoice
+            every { delayNetworkCall() } returns false
         }
 
         val paymentProvider = mockk<PaymentProvider>() {
@@ -96,6 +97,7 @@ class InvokePaymentProviderProcessorStateImplTest {
 
         val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
             every { getInvoice() } returns invoice
+            every { delayNetworkCall() } returns false
         }
 
         val paymentProvider = mockk<PaymentProvider>() {

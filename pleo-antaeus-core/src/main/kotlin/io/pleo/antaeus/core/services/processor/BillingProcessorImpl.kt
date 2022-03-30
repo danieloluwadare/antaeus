@@ -1,8 +1,8 @@
 package io.pleo.antaeus.core.services.processor
 
 import io.pleo.antaeus.core.services.processor.requestadapter.RequestAdapter
-import io.pleo.antaeus.core.services.processor.statechange.BillingProcessRequest
-import io.pleo.antaeus.core.services.processor.statechange.ProcessorState
+import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
+import io.pleo.antaeus.core.services.processor.stateFlow.ProcessorState
 import io.pleo.antaeus.models.BillProcessorFlowState
 import mu.KotlinLogging
 
