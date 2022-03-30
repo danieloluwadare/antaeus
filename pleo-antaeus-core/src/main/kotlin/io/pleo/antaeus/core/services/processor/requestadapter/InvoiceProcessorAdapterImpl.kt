@@ -6,6 +6,7 @@ import io.pleo.antaeus.models.Invoice
 class InvoiceProcessorAdapterImpl(private val invoice: Invoice) : InvoiceProcessorAdapter {
     private var counter : Int = 0
     private var completeStatus : Boolean=false
+    private var delayNetworkCall : Boolean = false
 
     override fun getInvoice(): Invoice {
         return invoice
@@ -25,5 +26,13 @@ class InvoiceProcessorAdapterImpl(private val invoice: Invoice) : InvoiceProcess
 
     override fun setComplete() {
         completeStatus=true;
+    }
+
+    override fun delayNetworkCall(): Boolean {
+        return delayNetworkCall
+    }
+
+    override fun activateDelayNetworkCall() {
+        delayNetworkCall=true
     }
 }

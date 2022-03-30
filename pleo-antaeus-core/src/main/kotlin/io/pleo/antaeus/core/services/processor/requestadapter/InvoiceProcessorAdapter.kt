@@ -8,4 +8,7 @@ interface InvoiceProcessorAdapter {
     fun incrementCounter()
     fun isComplete(): Boolean
     fun setComplete()
+    fun delayNetworkCall(): Boolean
+    fun activateDelayNetworkCall()
+
 }

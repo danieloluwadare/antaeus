@@ -19,6 +19,8 @@ class InvokePaymentProviderProcessorStateImpl : ProcessorState {
             val invoice = request.currentInvoiceProcess.getInvoice()
             val paymentProvider = request.billingRequestAdapterImpl.getPaymentProvider()
             val paymentProviderResponse = paymentProvider.charge(invoice)
+            if(request.currentInvoiceProcess.delayNetworkCall())
+                Thread.sleep(10)
             request.paymentProviderResponse=paymentProviderResponse
 //            afterBillingChargeService.process(invoice, paymentProviderResponse)
             if(paymentProviderResponse)

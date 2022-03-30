@@ -1,14 +1,10 @@
 package io.pleo.antaeus.core.services.processor.requestadapter
 
-import io.mockk.mockk
-import io.pleo.antaeus.core.external.PaymentProvider
-import io.pleo.antaeus.core.services.AfterStateChangeService
-import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.models.Currency
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
 import io.pleo.antaeus.models.Money
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
@@ -50,6 +46,22 @@ class InvoiceProcessorAdapterImplTest{
         invoiceProcessorAdapter.setComplete()
         assertEquals(true, invoiceProcessorAdapter.isComplete())
     }
+
+    @Test
+    fun `when invoiceProcessorAdapter is instantiated then delayNetworkCall must be false`() {
+        val invoice = createInvoice(InvoiceStatus.PENDING)
+        val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice)
+        assertEquals(false, invoiceProcessorAdapter.delayNetworkCall())
+    }
+
+    @Test
+    fun `when invoiceProcessorAdapter is instantiated then activateDelayNetworkCall must set delayNetworkCall to be false`() {
+        val invoice = createInvoice(InvoiceStatus.PENDING)
+        val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice)
+        invoiceProcessorAdapter.activateDelayNetworkCall()
+        assertEquals(true, invoiceProcessorAdapter.delayNetworkCall())
+    }
+
 
     private fun createInvoice(status: InvoiceStatus): Invoice {
         return Invoice(
