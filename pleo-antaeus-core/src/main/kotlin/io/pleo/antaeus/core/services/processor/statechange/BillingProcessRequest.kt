@@ -15,4 +15,7 @@ data class BillingProcessRequest(val billingRequestAdapterImpl: RequestAdapter, 
 
     //computed values
     lateinit var currentInvoiceProcess:InvoiceProcessorAdapter
+    var paymentProviderResponse : Boolean = false
+    lateinit var exception:Exception
+
 }
