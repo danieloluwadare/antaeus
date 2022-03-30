@@ -9,9 +9,11 @@ package io.pleo.antaeus.app
 
 import io.pleo.antaeus.core.cor.AfterStateChangeHandlerFactory
 import io.pleo.antaeus.core.cor.ExceptionHandlerBuilder
+import io.pleo.antaeus.core.cron.BillingScheduler
 import io.pleo.antaeus.core.external.OnePipeMockPaymentProvider
 import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.core.services.CustomerService
+import io.pleo.antaeus.core.services.InvoiceBatchServiceImpl
 import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.core.services.processor.BillingProcessorImpl
 import io.pleo.antaeus.core.services.processor.stateFlow.ProcessorStateBuilder
@@ -80,13 +82,19 @@ fun main() {
     // Inject Map of ProcessorState into Billing Processor
     val billingProcessor = BillingProcessorImpl(mapOfProcessorState = mapOfProcessorState)
 
+    // This Service fetch  invoice in batches according to the limit set
+    val batchService = InvoiceBatchServiceImpl(invoiceService = invoiceService,  limit = 20)
+
     // This is _your_ billing service to be included where you see fit
     val billingService = BillingService(
         paymentProvider = paymentProvider,
         invoiceService = invoiceService,
         billingProcessor = billingProcessor,
-        mapOfAfterStateChangeService = mapOfAfterStateChangeService
+        mapOfAfterStateChangeService = mapOfAfterStateChangeService,
+        batchService = batchService
     )
+    val billingScheduler = BillingScheduler(billingService)
+    billingScheduler.schedule()
 
     // Create REST web service
     AntaeusRest(

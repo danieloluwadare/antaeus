@@ -22,7 +22,8 @@ class InvoiceBatchServiceImplTest {
             every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
         }
 
-        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, total = 100, limit = 50)
+        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 50)
+        invoiceBatchServiceImpl.setTotalNumberOfRecords(100)
 
         assertEquals(invoiceList.size, invoiceBatchServiceImpl.getNextBatch().size)
     }
@@ -36,7 +37,9 @@ class InvoiceBatchServiceImplTest {
             every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
         }
 
-        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, total = 100, limit = 50)
+        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 50)
+        invoiceBatchServiceImpl.setTotalNumberOfRecords(100)
+
         assertTrue(invoiceBatchServiceImpl.nextBatchExist())
     }
 
@@ -49,7 +52,9 @@ class InvoiceBatchServiceImplTest {
             every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
         }
 
-        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, total = 10, limit = 10)
+        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 10)
+        invoiceBatchServiceImpl.setTotalNumberOfRecords(10)
+
         invoiceBatchServiceImpl.getNextBatch()
         assertFalse(invoiceBatchServiceImpl.nextBatchExist())
     }
@@ -63,7 +68,9 @@ class InvoiceBatchServiceImplTest {
             every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
         }
 
-        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, total = 10, limit = 10)
+        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService,  limit = 10)
+        invoiceBatchServiceImpl.setTotalNumberOfRecords(10)
+
         invoiceBatchServiceImpl.getNextBatch()
         assertFalse(invoiceBatchServiceImpl.nextBatchExist())
     }

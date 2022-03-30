@@ -12,16 +12,16 @@ class BillingService(
     private val paymentProvider: PaymentProvider,
     private val invoiceService: InvoiceService,
     private val billingProcessor: BillingProcessor,
-    private val mapOfAfterStateChangeService: Map<String, AfterStateChangeService>
+    private val mapOfAfterStateChangeService: Map<String, AfterStateChangeService>,
+    private val batchService : BatchService
 ) {
     private val logger = KotlinLogging.logger { }
 
 
     fun initiate() {
-        val total: Int = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
-        logger.info { ">> invoices total size ==> (${total}) .<<" }
-        val batchService =
-            InvoiceBatchServiceImpl(invoiceService = invoiceService, total = total, limit = 20)
+        val totalNumberOfRecords: Int = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
+        logger.info { ">> invoices total size ==> (${totalNumberOfRecords}) .<<" }
+        batchService.setTotalNumberOfRecords(totalNumberOfRecords)
         var batchCount = 1
         while (batchService.nextBatchExist()) {
             val invoicesList: List<Invoice> = batchService.getNextBatch()

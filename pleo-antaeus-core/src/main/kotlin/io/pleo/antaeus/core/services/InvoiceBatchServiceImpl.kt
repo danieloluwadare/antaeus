@@ -5,14 +5,11 @@ import io.pleo.antaeus.models.InvoiceStatus
 
 class InvoiceBatchServiceImpl(
     private val invoiceService: InvoiceService,
-    private val total: Int,
     private var limit: Int = 50
 ) : BatchService {
+    private var total: Int=0
     private var offset: Int = 0
     private var lastInvoiceId: Int = 0
-
-    // Count Unpaid Invoices
-    //    val unpaidInvoiceCount = invoiceService.countUnpaid()
 
     override fun getNextBatch(): List<Invoice> {
         //retrieve invoices in batches
@@ -32,5 +29,9 @@ class InvoiceBatchServiceImpl(
 
     override fun nextBatchExist(): Boolean {
         return offset < total
+    }
+
+    override fun setTotalNumberOfRecords(totalNumberOfRecords: Int) {
+        total=totalNumberOfRecords
     }
 }
