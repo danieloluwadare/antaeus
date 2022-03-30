@@ -1,15 +1,12 @@
 package io.pleo.antaeus.core.services
 
+import io.pleo.antaeus.core.AfterStateChangeAction.AfterStateChangeService
 import io.pleo.antaeus.core.external.PaymentProvider
 import io.pleo.antaeus.core.services.processor.BillingProcessor
 import io.pleo.antaeus.core.services.processor.requestadapter.BillingRequestAdapterImpl
-import io.pleo.antaeus.core.services.processor.requestadapter.RequestAdapter
-import io.pleo.antaeus.core.services.processor.statechange.ProcessorState
-import io.pleo.antaeus.models.BillProcessorFlowState
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
 import mu.KotlinLogging
-import java.util.Queue
 
 class BillingService(
     private val paymentProvider: PaymentProvider,

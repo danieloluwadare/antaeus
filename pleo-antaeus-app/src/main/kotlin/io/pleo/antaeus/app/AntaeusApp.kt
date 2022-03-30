@@ -11,6 +11,9 @@ import getPaymentProvider
 import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.core.services.CustomerService
 import io.pleo.antaeus.core.services.InvoiceService
+import io.pleo.antaeus.core.services.processor.BillingProcessor
+import io.pleo.antaeus.core.services.processor.BillingProcessorImpl
+import io.pleo.antaeus.core.services.processor.statechange.ProcessorStateBuilder
 import io.pleo.antaeus.data.AntaeusDal
 import io.pleo.antaeus.data.CustomerTable
 import io.pleo.antaeus.data.InvoiceTable
@@ -60,8 +63,11 @@ fun main() {
     val invoiceService = InvoiceService(dal = dal)
     val customerService = CustomerService(dal = dal)
 
+    val mapOfProcessorState = ProcessorStateBuilder.buildMap()
+    val billingProcessor = BillingProcessorImpl(mapOfProcessorState)
+
     // This is _your_ billing service to be included where you see fit
-    val billingService = BillingService(paymentProvider = paymentProvider, invoiceService = invoiceService)
+    val billingService = BillingService(paymentProvider = paymentProvider, invoiceService = invoiceService, billingProcessor = billingProcessor)
 
     // Create REST web service
     AntaeusRest(

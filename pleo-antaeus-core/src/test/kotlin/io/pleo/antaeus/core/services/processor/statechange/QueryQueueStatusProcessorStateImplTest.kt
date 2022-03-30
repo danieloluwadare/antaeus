@@ -31,7 +31,7 @@ class QueryQueueStatusProcessorStateImplTest{
     }
 
     @Test
-    fun `next state equals VALIDATE_MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE`() {
+    fun `when queue is not empty next state must be START_STATE`() {
         val list = ArrayList<InvoiceProcessorAdapter>()
         val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>()
         list.add(invoiceProcessorAdapter)

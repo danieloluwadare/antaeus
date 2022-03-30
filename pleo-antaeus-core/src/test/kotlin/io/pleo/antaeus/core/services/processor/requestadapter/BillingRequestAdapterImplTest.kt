@@ -1,10 +1,8 @@
 package io.pleo.antaeus.core.services.processor.requestadapter
 
-import io.mockk.every
 import io.mockk.mockk
 import io.pleo.antaeus.core.external.PaymentProvider
-import io.pleo.antaeus.core.services.AfterStateChangeService
-import io.pleo.antaeus.core.services.InvoiceBatchServiceImpl
+import io.pleo.antaeus.core.AfterStateChangeAction.AfterStateChangeService
 import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.models.Currency
 import io.pleo.antaeus.models.Invoice
