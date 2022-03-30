@@ -6,10 +6,10 @@ import io.pleo.antaeus.models.BillProcessorFlowState
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class AfterStateChangeHandlerFactoryTest{
+class AfterStateChangeHandlerFactoryTest {
     private val networkExceptionHandler = NetworkExceptionHandler()
-    private val mapOfAfterStateChangeHandler : Map<String, AfterStateChangeService> = AfterStateChangeHandlerFactory
-        .buildMapOfAfterStateChangeHandlerFactory(networkExceptionHandler)
+    private val mapOfAfterStateChangeHandler: Map<String, AfterStateChangeService> =
+        AfterStateChangeHandlerFactory.build(networkExceptionHandler)
 
 
     @Test

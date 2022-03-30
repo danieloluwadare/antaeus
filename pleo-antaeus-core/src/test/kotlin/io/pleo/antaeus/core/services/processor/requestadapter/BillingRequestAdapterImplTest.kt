@@ -1,18 +1,18 @@
 package io.pleo.antaeus.core.services.processor.requestadapter
 
 import io.mockk.mockk
-import io.pleo.antaeus.core.external.PaymentProvider
 import io.pleo.antaeus.core.afterStateChangeAction.AfterStateChangeService
+import io.pleo.antaeus.core.external.PaymentProvider
 import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.models.Currency
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
 import io.pleo.antaeus.models.Money
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
-class BillingRequestAdapterImplTest{
+class BillingRequestAdapterImplTest {
 
     @Test
     fun `when a list of invoices is passed into the constructor getInvoicesProcessorAdapters size must equal invoice size`() {
@@ -25,7 +25,13 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
+        val requestAdapterImpl = BillingRequestAdapterImpl(
+            invoicesList = invoiceList,
+            paymentProvider = paymentProvider,
+            invoiceService = invoiceService,
+            mapOfAfterStateChangeService = map,
+            maximumRetryCount = 10
+        )
 
         assertEquals(invoiceList.size, requestAdapterImpl.getInvoicesProcessorAdapters().size)
     }
@@ -41,7 +47,13 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
+        val requestAdapterImpl = BillingRequestAdapterImpl(
+            invoicesList = invoiceList,
+            paymentProvider = paymentProvider,
+            invoiceService = invoiceService,
+            mapOfAfterStateChangeService = map,
+            maximumRetryCount = 10
+        )
 
         assertEquals(invoiceService, requestAdapterImpl.getInvoiceService())
     }
@@ -57,7 +69,13 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
+        val requestAdapterImpl = BillingRequestAdapterImpl(
+            invoicesList = invoiceList,
+            paymentProvider = paymentProvider,
+            invoiceService = invoiceService,
+            mapOfAfterStateChangeService = map,
+            maximumRetryCount = 10
+        )
 
         assertEquals(paymentProvider, requestAdapterImpl.getPaymentProvider())
     }
@@ -73,7 +91,13 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
+        val requestAdapterImpl = BillingRequestAdapterImpl(
+            invoicesList = invoiceList,
+            paymentProvider = paymentProvider,
+            invoiceService = invoiceService,
+            mapOfAfterStateChangeService = map,
+            maximumRetryCount = 10
+        )
 
         assertEquals(map, requestAdapterImpl.getAfterStateChangeService())
     }
@@ -89,7 +113,13 @@ class BillingRequestAdapterImplTest{
         val map = HashMap<String, AfterStateChangeService>()
         map["test"] = afterStateChangeService;
 
-        val requestAdapterImpl = BillingRequestAdapterImpl(invoiceList,paymentProvider,invoiceService,map,10)
+        val requestAdapterImpl = BillingRequestAdapterImpl(
+            invoicesList = invoiceList,
+            paymentProvider = paymentProvider,
+            invoiceService = invoiceService,
+            mapOfAfterStateChangeService = map,
+            maximumRetryCount = 10
+        )
 
         assertEquals(10, requestAdapterImpl.getMaximumRetryCount())
     }

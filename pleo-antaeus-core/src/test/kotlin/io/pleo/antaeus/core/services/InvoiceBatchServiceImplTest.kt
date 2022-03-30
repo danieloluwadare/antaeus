@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
-class InvoiceBatchServiceImplTest{
+class InvoiceBatchServiceImplTest {
 
     @Test
     fun `getNextBatch returns a list of invoice`() {
@@ -19,10 +19,10 @@ class InvoiceBatchServiceImplTest{
         for (i in 1..10) invoiceList.add(createInvoice(InvoiceStatus.PENDING))
 
         val invoiceService = mockk<InvoiceService> {
-        every { fetchInvoiceInBatchesByStatus(any(),any(),any()) } returns invoiceList
+            every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
         }
 
-        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService,100,50)
+        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, total = 100, limit = 50)
 
         assertEquals(invoiceList.size, invoiceBatchServiceImpl.getNextBatch().size)
     }
@@ -33,10 +33,10 @@ class InvoiceBatchServiceImplTest{
         for (i in 1..5) invoiceList.add(createInvoice(InvoiceStatus.PENDING))
 
         val invoiceService = mockk<InvoiceService> {
-            every { fetchInvoiceInBatchesByStatus(any(),any(),any()) } returns invoiceList
+            every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
         }
 
-        val invoiceBatchServiceImpl  = InvoiceBatchServiceImpl(invoiceService,100,50)
+        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, total = 100, limit = 50)
         assertTrue(invoiceBatchServiceImpl.nextBatchExist())
     }
 
@@ -46,10 +46,10 @@ class InvoiceBatchServiceImplTest{
         for (i in 1..10) invoiceList.add(createInvoice(InvoiceStatus.PENDING))
 
         val invoiceService = mockk<InvoiceService> {
-            every { fetchInvoiceInBatchesByStatus(any(),any(),any()) } returns invoiceList
+            every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
         }
 
-        val invoiceBatchServiceImpl  = InvoiceBatchServiceImpl(invoiceService,10,10)
+        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, total = 10, limit = 10)
         invoiceBatchServiceImpl.getNextBatch()
         assertFalse(invoiceBatchServiceImpl.nextBatchExist())
     }
@@ -60,10 +60,10 @@ class InvoiceBatchServiceImplTest{
         for (i in 1..12) invoiceList.add(createInvoice(InvoiceStatus.PENDING))
 
         val invoiceService = mockk<InvoiceService> {
-            every { fetchInvoiceInBatchesByStatus(any(),any(),any()) } returns invoiceList
+            every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
         }
 
-        val invoiceBatchServiceImpl  = InvoiceBatchServiceImpl(invoiceService,10,10)
+        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, total = 10, limit = 10)
         invoiceBatchServiceImpl.getNextBatch()
         assertFalse(invoiceBatchServiceImpl.nextBatchExist())
     }

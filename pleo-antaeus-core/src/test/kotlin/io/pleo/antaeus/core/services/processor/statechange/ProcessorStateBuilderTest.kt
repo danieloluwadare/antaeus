@@ -4,9 +4,9 @@ import io.pleo.antaeus.models.BillProcessorFlowState
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class ProcessorStateBuilderTest{
+class ProcessorStateBuilderTest {
 
-    val mapOfProcessorState : Map<String, ProcessorState> = ProcessorStateBuilder.buildMap()
+    val mapOfProcessorState: Map<String, ProcessorState> = ProcessorStateBuilder.buildMap()
 
 
     @Test

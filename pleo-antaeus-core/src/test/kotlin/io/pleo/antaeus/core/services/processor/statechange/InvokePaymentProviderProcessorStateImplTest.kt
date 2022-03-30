@@ -12,14 +12,15 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
-class InvokePaymentProviderProcessorStateImplTest{
+class InvokePaymentProviderProcessorStateImplTest {
 
     @Test
     fun `get Name Equals MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE`() {
         val invokePaymentProviderProcessorStateImpl = InvokePaymentProviderProcessorStateImpl();
         assertEquals(
             BillProcessorFlowState.INVOKE_PAYMENT_PROVIDER_STATE.name,
-            invokePaymentProviderProcessorStateImpl.getStateType())
+            invokePaymentProviderProcessorStateImpl.getStateType()
+        )
     }
 
     @Test
@@ -28,21 +29,24 @@ class InvokePaymentProviderProcessorStateImplTest{
 
         val invoice = createInvoice(InvoiceStatus.PENDING)
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>(){
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
             every { getInvoice() } returns invoice
         }
 
-        val paymentProvider = mockk<PaymentProvider>(){
+        val paymentProvider = mockk<PaymentProvider>() {
             every { charge(any()) } returns true
         }
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
             every { getPaymentProvider() } returns paymentProvider
         }
 
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
-        billingProcessRequest.currentInvoiceProcess=invoiceProcessorAdapter
+        val billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
+        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         val invokePaymentProviderProcessorStateImpl = InvokePaymentProviderProcessorStateImpl();
         invokePaymentProviderProcessorStateImpl.handleRequest(billingProcessRequest)
 
@@ -57,27 +61,31 @@ class InvokePaymentProviderProcessorStateImplTest{
 
         val invoice = createInvoice(InvoiceStatus.PENDING)
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>(){
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
             every { getInvoice() } returns invoice
         }
 
-        val paymentProvider = mockk<PaymentProvider>(){
+        val paymentProvider = mockk<PaymentProvider>() {
             every { charge(any()) } returns true
         }
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
             every { getPaymentProvider() } returns paymentProvider
         }
 
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
-        billingProcessRequest.currentInvoiceProcess=invoiceProcessorAdapter
+        val billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
+        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         val invokePaymentProviderProcessorStateImpl = InvokePaymentProviderProcessorStateImpl();
         invokePaymentProviderProcessorStateImpl.handleRequest(billingProcessRequest)
 
         assertEquals(
             BillProcessorFlowState.PAYMENT_SUCCESSFUL_STATE,
-            billingProcessRequest.state)
+            billingProcessRequest.state
+        )
     }
 
     @Test
@@ -86,27 +94,31 @@ class InvokePaymentProviderProcessorStateImplTest{
 
         val invoice = createInvoice(InvoiceStatus.PENDING)
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>(){
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
             every { getInvoice() } returns invoice
         }
 
-        val paymentProvider = mockk<PaymentProvider>(){
+        val paymentProvider = mockk<PaymentProvider>() {
             every { charge(any()) } returns false
         }
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
             every { getPaymentProvider() } returns paymentProvider
         }
 
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
-        billingProcessRequest.currentInvoiceProcess=invoiceProcessorAdapter
+        val billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
+        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         val invokePaymentProviderProcessorStateImpl = InvokePaymentProviderProcessorStateImpl();
         invokePaymentProviderProcessorStateImpl.handleRequest(billingProcessRequest)
 
         assertEquals(
             BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE,
-            billingProcessRequest.state)
+            billingProcessRequest.state
+        )
     }
 
     @Test
@@ -115,29 +127,33 @@ class InvokePaymentProviderProcessorStateImplTest{
 
         val invoice = createInvoice(InvoiceStatus.PENDING)
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>(){
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
             every { getInvoice() } returns invoice
         }
 
         val customerNotFoundException = CustomerNotFoundException(1)
 
-        val paymentProvider = mockk<PaymentProvider>(){
+        val paymentProvider = mockk<PaymentProvider>() {
             every { charge(any()) } throws customerNotFoundException
         }
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
             every { getPaymentProvider() } returns paymentProvider
         }
 
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
-        billingProcessRequest.currentInvoiceProcess=invoiceProcessorAdapter
+        val billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
+        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         val invokePaymentProviderProcessorStateImpl = InvokePaymentProviderProcessorStateImpl();
         invokePaymentProviderProcessorStateImpl.handleRequest(billingProcessRequest)
 
         assertEquals(
             BillProcessorFlowState.EXCEPTION_ENCOUNTERED_STATE,
-            billingProcessRequest.state)
+            billingProcessRequest.state
+        )
     }
 
     @Test
@@ -146,29 +162,33 @@ class InvokePaymentProviderProcessorStateImplTest{
 
         val invoice = createInvoice(InvoiceStatus.PENDING)
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>(){
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
             every { getInvoice() } returns invoice
         }
 
         val customerNotFoundException = CustomerNotFoundException(1)
 
-        val paymentProvider = mockk<PaymentProvider>(){
+        val paymentProvider = mockk<PaymentProvider>() {
             every { charge(any()) } throws customerNotFoundException
         }
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
             every { getPaymentProvider() } returns paymentProvider
         }
 
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
-        billingProcessRequest.currentInvoiceProcess=invoiceProcessorAdapter
+        val billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
+        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         val invokePaymentProviderProcessorStateImpl = InvokePaymentProviderProcessorStateImpl();
         invokePaymentProviderProcessorStateImpl.handleRequest(billingProcessRequest)
 
         assertEquals(
             customerNotFoundException,
-            billingProcessRequest.exception)
+            billingProcessRequest.exception
+        )
     }
 
     private fun createInvoice(status: InvoiceStatus): Invoice {

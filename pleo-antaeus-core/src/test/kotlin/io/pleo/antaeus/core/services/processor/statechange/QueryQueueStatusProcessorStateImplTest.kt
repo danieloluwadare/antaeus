@@ -5,25 +5,31 @@ import io.mockk.mockk
 import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapter
 import io.pleo.antaeus.core.services.processor.requestadapter.RequestAdapter
 import io.pleo.antaeus.models.BillProcessorFlowState
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class QueryQueueStatusProcessorStateImplTest{
+class QueryQueueStatusProcessorStateImplTest {
 
     @Test
     fun `get Name Equals START_STATE`() {
         val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl();
-        assertEquals(BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE.name, queryQueueStatusProcessorStateImpl.getStateType())
+        assertEquals(
+            BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE.name,
+            queryQueueStatusProcessorStateImpl.getStateType()
+        )
     }
 
     @Test
     fun `when queue is empty next state must be STOP_STATE`() {
         val list = ArrayList<InvoiceProcessorAdapter>()
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
         }
-        var billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
+        var billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
         val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl();
         queryQueueStatusProcessorStateImpl.handleRequest(billingProcessRequest)
 
@@ -38,10 +44,13 @@ class QueryQueueStatusProcessorStateImplTest{
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
         }
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
+        var billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
         val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl();
         queryQueueStatusProcessorStateImpl.handleRequest(billingProcessRequest)
 

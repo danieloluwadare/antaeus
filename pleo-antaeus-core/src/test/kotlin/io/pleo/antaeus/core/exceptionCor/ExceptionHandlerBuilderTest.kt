@@ -4,10 +4,10 @@ import io.pleo.antaeus.core.cor.ExceptionHandlerBuilder
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class ExceptionHandlerBuilderTest{
+class ExceptionHandlerBuilderTest {
 
 
-    val listOfExceptionHandlers  = ExceptionHandlerBuilder.buildChain()
+    val listOfExceptionHandlers = ExceptionHandlerBuilder.buildChain()
 
 
     @Test

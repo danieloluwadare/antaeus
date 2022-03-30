@@ -1,7 +1,6 @@
 package io.pleo.antaeus.core.services.processor.statechange
 
 import io.pleo.antaeus.models.BillProcessorFlowState
-import io.pleo.antaeus.models.InvoiceStatus
 import mu.KotlinLogging
 
 class QueryQueueStatusProcessorStateImpl : ProcessorState {
@@ -13,10 +12,10 @@ class QueryQueueStatusProcessorStateImpl : ProcessorState {
 
     override fun handleRequest(request: BillingProcessRequest) {
         logger.info { ">>Begin QueryQueueStatusProcessorStateImpl<<" }
-        if(request.queue.isEmpty())
+        if (request.queue.isEmpty())
             request.state = BillProcessorFlowState.STOP_STATE
         else
-            request.state=BillProcessorFlowState.START_STATE
+            request.state = BillProcessorFlowState.START_STATE
 
         logger.info { ">>End QueryQueueStatusProcessorStateImpl<<" }
     }

@@ -9,11 +9,11 @@ class OnePipeMockPaymentProvider : PaymentProvider {
     override fun charge(invoice: Invoice): Boolean {
         val randomNumber = (0..100).shuffled().last()
         val remainder = randomNumber % 4
-        return if(remainder==0)
+        return if (remainder == 0)
             false
-        else if(remainder==1)
+        else if (remainder == 1)
             true
-        else if(remainder==2)
+        else if (remainder == 2)
             throw CustomerNotFoundException(invoice.customerId)
         else
             throw NetworkException()

@@ -1,7 +1,5 @@
 package io.pleo.antaeus.core.cor
 
-import java.util.Collections
-
 class ExceptionHandlerBuilder {
 
     companion object {
@@ -13,10 +11,10 @@ class ExceptionHandlerBuilder {
             list.add(UnKnownErrorExceptionHandler())
 
             var sortedList = list.sortedWith(compareBy { it.getOrder() })
-            for(i in 1 until sortedList.size){
-                val prevExceptionHandler = sortedList[i-1]
+            for (i in 1 until sortedList.size) {
+                val prevExceptionHandler = sortedList[i - 1]
                 val currentExceptionHandler = sortedList[i]
-                prevExceptionHandler.successor=currentExceptionHandler
+                prevExceptionHandler.successor = currentExceptionHandler
             }
 
 //            val customerNotFoundExceptionHandler = CustomerNotFoundExceptionHandler();
@@ -29,7 +27,7 @@ class ExceptionHandlerBuilder {
 //            networkExceptionHandler.successor = unKnownErrorExceptionHandler;
 //
 //            return customerNotFoundExceptionHandler;
-                return sortedList[0];
+            return sortedList[0];
 
         }
     }

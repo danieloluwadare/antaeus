@@ -14,8 +14,8 @@ class StartProcessorStateImpl : ProcessorState {
         logger.info { ">>Begin StartProcessorStateImpl<<" }
 
         val invoiceProcessorAdapter = request.queue.remove()
-        request.currentInvoiceProcess=invoiceProcessorAdapter
-        request.state=BillProcessorFlowState.VALIDATE_MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE
+        request.currentInvoiceProcess = invoiceProcessorAdapter
+        request.state = BillProcessorFlowState.VALIDATE_MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE
 
         logger.info { ">>end StartProcessorStateImpl<<" }
 

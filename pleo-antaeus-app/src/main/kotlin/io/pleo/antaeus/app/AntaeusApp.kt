@@ -60,8 +60,6 @@ fun main() {
     setupInitialData(dal = dal)
 
     // Get third parties
-    val onePipeMockPaymentProvider = OnePipeMockPaymentProvider()
-//    val paymentProvider = getPaymentProvider()
     val paymentProvider = OnePipeMockPaymentProvider()
 
 
@@ -69,12 +67,18 @@ fun main() {
     val invoiceService = InvoiceService(dal = dal)
     val customerService = CustomerService(dal = dal)
 
+    // Build Chain Of Responsibility of ExceptionsHandler
     val exceptionHandler = ExceptionHandlerBuilder.buildChain()
-    val mapOfAfterStateChangeService =
-        AfterStateChangeHandlerFactory.buildMapOfAfterStateChangeHandlerFactory(exceptionHandler=exceptionHandler)
 
+    // Build a Map of AfterStateChangeService
+    val mapOfAfterStateChangeService =
+        AfterStateChangeHandlerFactory.build(exceptionHandler = exceptionHandler)
+
+    // Build a Map of ProcessorState
     val mapOfProcessorState = ProcessorStateBuilder.buildMap()
-    val billingProcessor = BillingProcessorImpl(mapOfProcessorState=mapOfProcessorState)
+
+    // Inject Map of ProcessorState into Billing Processor
+    val billingProcessor = BillingProcessorImpl(mapOfProcessorState = mapOfProcessorState)
 
     // This is _your_ billing service to be included where you see fit
     val billingService = BillingService(

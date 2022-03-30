@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
-internal class NetworkExceptionHandlerTest{
+internal class NetworkExceptionHandlerTest {
 
     @Test
     fun ` invoice counter must be increased`() {
@@ -24,12 +24,15 @@ internal class NetworkExceptionHandlerTest{
 
         val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice)
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
         }
 
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
-        billingProcessRequest.currentInvoiceProcess=invoiceProcessorAdapter
+        val billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
+        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         billingProcessRequest.exception = NetworkException()
         val prevCounter = billingProcessRequest.currentInvoiceProcess.getCounter()
 
@@ -48,12 +51,15 @@ internal class NetworkExceptionHandlerTest{
 
         val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice)
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
         }
 
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
-        billingProcessRequest.currentInvoiceProcess=invoiceProcessorAdapter
+        val billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
+        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         billingProcessRequest.exception = NetworkException()
 
         val networkExceptionHandler = NetworkExceptionHandler();
@@ -70,19 +76,22 @@ internal class NetworkExceptionHandlerTest{
 
         val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice)
 
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
         }
 
-        val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
-        billingProcessRequest.currentInvoiceProcess=invoiceProcessorAdapter
+        val billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
+        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         billingProcessRequest.exception = NetworkException()
         val prevSizeOfQueue = billingProcessRequest.queue.size
 
         val networkExceptionHandler = NetworkExceptionHandler();
         networkExceptionHandler.handleException(billingProcessRequest)
 
-        assertEquals(prevSizeOfQueue+1,billingProcessRequest.queue.size)
+        assertEquals(prevSizeOfQueue + 1, billingProcessRequest.queue.size)
     }
 
     private fun createInvoice(status: InvoiceStatus): Invoice {

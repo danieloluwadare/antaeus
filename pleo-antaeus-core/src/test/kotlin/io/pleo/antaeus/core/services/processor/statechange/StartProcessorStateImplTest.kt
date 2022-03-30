@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 
-class StartProcessorStateImplTest{
+class StartProcessorStateImplTest {
 
     @Test
     fun `queue must be queried and reduce in size`() {
@@ -19,14 +19,17 @@ class StartProcessorStateImplTest{
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
         }
-        var billingProcessRequest = BillingProcessRequest(requestAdapter,BillProcessorFlowState.START_STATE)
+        var billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
         val startProcessorStateImpl = StartProcessorStateImpl();
         startProcessorStateImpl.handleRequest(billingProcessRequest)
 
-        assertEquals(list.size -1, billingProcessRequest.queue.size)
+        assertEquals(list.size - 1, billingProcessRequest.queue.size)
     }
 
     @Test
@@ -37,10 +40,13 @@ class StartProcessorStateImplTest{
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
         }
-        var billingProcessRequest = BillingProcessRequest(requestAdapter,BillProcessorFlowState.START_STATE)
+        var billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
         val startProcessorStateImpl = StartProcessorStateImpl();
         startProcessorStateImpl.handleRequest(billingProcessRequest)
 
@@ -56,10 +62,13 @@ class StartProcessorStateImplTest{
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
-        val requestAdapter = mockk<RequestAdapter>(){
+        val requestAdapter = mockk<RequestAdapter>() {
             every { getInvoicesProcessorAdapters() } returns list
         }
-        var billingProcessRequest = BillingProcessRequest(requestAdapter,BillProcessorFlowState.START_STATE)
+        var billingProcessRequest = BillingProcessRequest(
+            billingRequestAdapterImpl = requestAdapter,
+            state = BillProcessorFlowState.START_STATE
+        )
         val startProcessorStateImpl = StartProcessorStateImpl();
         startProcessorStateImpl.handleRequest(billingProcessRequest)
 

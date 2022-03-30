@@ -20,13 +20,14 @@ class PaymentUnSuccessfulProcessorStateImpl : ProcessorState {
         invoiceService.updateInvoiceStatus(invoice.id, InvoiceStatus.FAILED)
 
         val mapOfAfterStateChangeService = request.billingRequestAdapterImpl.getAfterStateChangeService()
-        val afterStateChangeService = mapOfAfterStateChangeService[BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name]
+        val afterStateChangeService =
+            mapOfAfterStateChangeService[BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name]
 
         logger.info { "About Invoking afterStateChangeService" }
         afterStateChangeService?.initiate(request);
         logger.info { "End Invoking afterStateChangeService" }
 
-        request.state=BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
+        request.state = BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
         logger.info { ">>End PaymentUnSuccessfulProcessorStateImpl<<" }
     }
 }

@@ -23,13 +23,14 @@ class MaximumNumberRetriesExceededProcessorStateImpl : ProcessorState {
 
         logger.info { "Done Updating invoice status(${request.currentInvoiceProcess.getInvoice().id}) to Failed." }
 
-        val afterStateChangeService = mapOfAfterStateChangeService[BillProcessorFlowState.MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE.name]
+        val afterStateChangeService =
+            mapOfAfterStateChangeService[BillProcessorFlowState.MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE.name]
 
         logger.info { "About Invoking afterStateChangeService" }
         afterStateChangeService?.initiate(request);
         logger.info { "End Invoking afterStateChangeService" }
 
-        request.state=BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
+        request.state = BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
         logger.info { ">>End MaximumNumberRetriesExceededProcessorStateImpl<<" }
     }
 }

@@ -16,9 +16,9 @@ class ProcessorStateBuilder {
             list.add(InvokePaymentProviderProcessorStateImpl())
             list.add(ExceptionEncounteredProcessorStateImpl())
 
-            val mapOfProcessorState = HashMap<String,ProcessorState>();
-            for (processorState in list){
-                mapOfProcessorState[processorState.getStateType()]=processorState
+            val mapOfProcessorState = HashMap<String, ProcessorState>();
+            for (processorState in list) {
+                mapOfProcessorState[processorState.getStateType()] = processorState
             }
 
             return mapOfProcessorState

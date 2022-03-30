@@ -16,11 +16,12 @@ class InvoiceBatchServiceImpl(
 
     override fun getNextBatch(): List<Invoice> {
         //retrieve invoices in batches
-        val invoicesList:List<Invoice> = invoiceService.fetchInvoiceInBatchesByStatus(lastInvoiceId,limit,InvoiceStatus.PENDING)
+        val invoicesList: List<Invoice> =
+            invoiceService.fetchInvoiceInBatchesByStatus(lastInvoiceId, limit, InvoiceStatus.PENDING)
 
         //update last invoiceId
         //it will be used for next query
-        if(invoicesList.isNotEmpty()){
+        if (invoicesList.isNotEmpty()) {
             lastInvoiceId = invoicesList.last().id
         }
 

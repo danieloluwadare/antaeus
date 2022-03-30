@@ -1,7 +1,6 @@
 package io.pleo.antaeus.core.services.processor.statechange
 
 import io.pleo.antaeus.models.BillProcessorFlowState
-import io.pleo.antaeus.models.InvoiceStatus
 import mu.KotlinLogging
 
 class InvokePaymentProviderProcessorStateImpl : ProcessorState {
@@ -21,24 +20,24 @@ class InvokePaymentProviderProcessorStateImpl : ProcessorState {
 
             val paymentProviderResponse = paymentProvider.charge(invoice)
 
-            if(request.currentInvoiceProcess.delayNetworkCall()){
+            if (request.currentInvoiceProcess.delayNetworkCall()) {
                 logger.info { "Retrying a Failed Invoice for the ${request.currentInvoiceProcess.getCounter()} times" }
                 logger.info { "Sleeping Thread" }
                 Thread.sleep(10)
             }
-            request.paymentProviderResponse=paymentProviderResponse
+            request.paymentProviderResponse = paymentProviderResponse
 
-            if(paymentProviderResponse)
-                request.state=BillProcessorFlowState.PAYMENT_SUCCESSFUL_STATE
+            if (paymentProviderResponse)
+                request.state = BillProcessorFlowState.PAYMENT_SUCCESSFUL_STATE
             else
-                request.state=BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE
+                request.state = BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE
 
             logger.info { "end payment charge" }
 
         } catch (ex: Exception) {
             logger.info { "exception occurred **(${ex.message})**" }
-            request.exception=ex
-            request.state=BillProcessorFlowState.EXCEPTION_ENCOUNTERED_STATE
+            request.exception = ex
+            request.state = BillProcessorFlowState.EXCEPTION_ENCOUNTERED_STATE
 //            exceptionHandler.handleException(ex, invoice, numberOfRetries, this)
         }
         logger.info { ">>End InvokePaymentProviderProcessorStateImpl<<" }

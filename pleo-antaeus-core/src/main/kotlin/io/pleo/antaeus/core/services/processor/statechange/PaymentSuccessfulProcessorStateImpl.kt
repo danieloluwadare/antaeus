@@ -28,7 +28,7 @@ class PaymentSuccessfulProcessorStateImpl : ProcessorState {
 
         request.currentInvoiceProcess.setComplete()
 
-        request.state=BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
+        request.state = BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
         logger.info { ">>End PaymentSuccessfulProcessorStateImpl<<" }
     }
 }

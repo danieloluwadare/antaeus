@@ -18,15 +18,22 @@ class BillingService(
 
 
     fun initiate() {
-        val total : Int = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
+        val total: Int = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
         logger.info { ">> invoices total size ==> (${total}) .<<" }
-        val batchService : BatchService = InvoiceBatchServiceImpl(invoiceService=invoiceService, total = total, limit = 20)
-        var batchCount =1
+        val batchService: BatchService =
+            InvoiceBatchServiceImpl(invoiceService = invoiceService, total = total, limit = 20)
+        var batchCount = 1
         while (batchService.nextBatchExist()) {
             val invoicesList: List<Invoice> = batchService.getNextBatch()
-            logger.info {">> invoice batch size ==> (${invoicesList.size}) .<<"}
+            logger.info { ">> invoice batch size ==> (${invoicesList.size}) .<<" }
             logger.info { ">> Begin Execution of BATCH NUMBER $batchCount <<" }
-            val requestAdapter = BillingRequestAdapterImpl(invoicesList =invoicesList, paymentProvider = paymentProvider, invoiceService = invoiceService, mapOfAfterStateChangeService = mapOfAfterStateChangeService, maximumRetryCount = 1);
+            val requestAdapter = BillingRequestAdapterImpl(
+                invoicesList = invoicesList,
+                paymentProvider = paymentProvider,
+                invoiceService = invoiceService,
+                mapOfAfterStateChangeService = mapOfAfterStateChangeService,
+                maximumRetryCount = 1
+            );
             billingProcessor.process(requestAdapter);
             batchCount++
         }
