@@ -71,10 +71,10 @@ fun main() {
 
     val exceptionHandler = ExceptionHandlerBuilder.buildChain()
     val mapOfAfterStateChangeService =
-        AfterStateChangeHandlerFactory.buildMapOfAfterStateChangeHandlerFactory(exceptionHandler)
+        AfterStateChangeHandlerFactory.buildMapOfAfterStateChangeHandlerFactory(exceptionHandler=exceptionHandler)
 
     val mapOfProcessorState = ProcessorStateBuilder.buildMap()
-    val billingProcessor = BillingProcessorImpl(mapOfProcessorState)
+    val billingProcessor = BillingProcessorImpl(mapOfProcessorState=mapOfProcessorState)
 
     // This is _your_ billing service to be included where you see fit
     val billingService = BillingService(
