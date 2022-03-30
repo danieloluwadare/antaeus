@@ -1,6 +1,6 @@
 package io.pleo.antaeus.core.services
 
-import io.pleo.antaeus.core.AfterStateChangeAction.AfterStateChangeService
+import io.pleo.antaeus.core.afterStateChangeAction.AfterStateChangeService
 import io.pleo.antaeus.core.external.PaymentProvider
 import io.pleo.antaeus.core.services.processor.BillingProcessor
 import io.pleo.antaeus.core.services.processor.requestadapter.BillingRequestAdapterImpl
