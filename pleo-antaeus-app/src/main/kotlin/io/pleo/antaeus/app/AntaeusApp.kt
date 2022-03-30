@@ -7,11 +7,12 @@
 
 package io.pleo.antaeus.app
 
-import getPaymentProvider
+import io.pleo.antaeus.core.cor.AfterStateChangeHandlerFactory
+import io.pleo.antaeus.core.cor.ExceptionHandlerBuilder
+import io.pleo.antaeus.core.external.OnePipeMockPaymentProvider
 import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.core.services.CustomerService
 import io.pleo.antaeus.core.services.InvoiceService
-import io.pleo.antaeus.core.services.processor.BillingProcessor
 import io.pleo.antaeus.core.services.processor.BillingProcessorImpl
 import io.pleo.antaeus.core.services.processor.statechange.ProcessorStateBuilder
 import io.pleo.antaeus.data.AntaeusDal
@@ -35,10 +36,12 @@ fun main() {
     val dbFile: File = File.createTempFile("antaeus-db", ".sqlite")
     // Connect to the database and create the needed tables. Drop any existing data.
     val db = Database
-        .connect(url = "jdbc:sqlite:${dbFile.absolutePath}",
+        .connect(
+            url = "jdbc:sqlite:${dbFile.absolutePath}",
             driver = "org.sqlite.JDBC",
             user = "root",
-            password = "")
+            password = ""
+        )
         .also {
             TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
             transaction(it) {
@@ -57,17 +60,29 @@ fun main() {
     setupInitialData(dal = dal)
 
     // Get third parties
-    val paymentProvider = getPaymentProvider()
+    val onePipeMockPaymentProvider = OnePipeMockPaymentProvider()
+//    val paymentProvider = getPaymentProvider()
+    val paymentProvider = OnePipeMockPaymentProvider()
+
 
     // Create core services
     val invoiceService = InvoiceService(dal = dal)
     val customerService = CustomerService(dal = dal)
 
+    val exceptionHandler = ExceptionHandlerBuilder.buildChain()
+    val mapOfAfterStateChangeService =
+        AfterStateChangeHandlerFactory.buildMapOfAfterStateChangeHandlerFactory(exceptionHandler)
+
     val mapOfProcessorState = ProcessorStateBuilder.buildMap()
     val billingProcessor = BillingProcessorImpl(mapOfProcessorState)
 
     // This is _your_ billing service to be included where you see fit
-    val billingService = BillingService(paymentProvider = paymentProvider, invoiceService = invoiceService, billingProcessor = billingProcessor)
+    val billingService = BillingService(
+        paymentProvider = paymentProvider,
+        invoiceService = invoiceService,
+        billingProcessor = billingProcessor,
+        mapOfAfterStateChangeService = mapOfAfterStateChangeService
+    )
 
     // Create REST web service
     AntaeusRest(
