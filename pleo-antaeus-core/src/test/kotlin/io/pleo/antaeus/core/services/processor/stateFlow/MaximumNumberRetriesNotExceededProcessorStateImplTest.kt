@@ -12,7 +12,7 @@ class MaximumNumberRetriesNotExceededProcessorStateImplTest {
 
     @Test
     fun `get Name Equals START_STATE`() {
-        val maximumNumberRetriesNotExceededProcessorStateImpl = MaximumNumberRetriesNotExceededProcessorStateImpl();
+        val maximumNumberRetriesNotExceededProcessorStateImpl = MaximumNumberRetriesNotExceededProcessorStateImpl()
         assertEquals(
             BillProcessorFlowState.MAXIMUM_NUMBER_RETRIES_NOT_EXCEEDED_STATE.name,
             maximumNumberRetriesNotExceededProcessorStateImpl.getStateType()
@@ -23,10 +23,10 @@ class MaximumNumberRetriesNotExceededProcessorStateImplTest {
     fun ` next state must equal INVOKE_PAYMENT_PROVIDER_STATE`() {
         val list = ArrayList<InvoiceProcessorAdapter>()
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter> {
             every { getCounter() } returns 1
         }
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
             every { getMaximumRetryCount() } returns 2
         }
@@ -35,7 +35,7 @@ class MaximumNumberRetriesNotExceededProcessorStateImplTest {
             state = BillProcessorFlowState.START_STATE
         )
         billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
-        val maximumNumberRetriesNotExceededProcessorStateImpl = MaximumNumberRetriesNotExceededProcessorStateImpl();
+        val maximumNumberRetriesNotExceededProcessorStateImpl = MaximumNumberRetriesNotExceededProcessorStateImpl()
         maximumNumberRetriesNotExceededProcessorStateImpl.handleRequest(billingProcessRequest)
 
         assertEquals(BillProcessorFlowState.INVOKE_PAYMENT_PROVIDER_STATE, billingProcessRequest.state)

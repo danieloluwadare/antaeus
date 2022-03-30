@@ -13,27 +13,21 @@ class InvokePaymentProviderProcessorStateImpl : ProcessorState {
     override fun handleRequest(request: BillingProcessRequest) {
         logger.info { ">>Begin InvokePaymentProviderProcessorStateImpl<<" }
         try {
-
+            logger.info { "begin payment charge for ${request.currentInvoiceProcess.getInvoice().id}" }
             val invoice = request.currentInvoiceProcess.getInvoice()
             val paymentProvider = request.billingRequestAdapterImpl.getPaymentProvider()
-            logger.info { "begin payment charge for ${request.currentInvoiceProcess.getInvoice().id}" }
-
-            val paymentProviderResponse = paymentProvider.charge(invoice)
-
             if (request.currentInvoiceProcess.delayNetworkCall()) {
-                logger.info { "Retrying a Failed Invoice for the ${request.currentInvoiceProcess.getCounter()} times" }
-                logger.info { "Sleeping Thread" }
+                logger.info { "Retrying a Failed Invoice for the ${request.currentInvoiceProcess.getCounter()} time" }
+                logger.info { "Delaying Network" }
                 Thread.sleep(10)
             }
+            val paymentProviderResponse = paymentProvider.charge(invoice)
             request.paymentProviderResponse = paymentProviderResponse
-
             if (paymentProviderResponse)
                 request.state = BillProcessorFlowState.PAYMENT_SUCCESSFUL_STATE
             else
                 request.state = BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE
-
             logger.info { "end payment charge" }
-
         } catch (ex: Exception) {
             logger.info { "exception occurred **(${ex.message})**" }
             request.exception = ex

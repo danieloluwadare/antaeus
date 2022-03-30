@@ -18,6 +18,6 @@ class UnKnownErrorExceptionHandler : ExceptionHandler() {
     }
 
     override fun getOrder(): Int {
-        return 4;
+        return 4
     }
 }

@@ -16,7 +16,7 @@ class PaymentUnSuccessfulProcessorStateImplTest {
 
     @Test
     fun `get Name Equals PAYMENT_UNSUCCESSFUL_STATE`() {
-        val paymentUnSuccessfulProcessorStateImpl = PaymentUnSuccessfulProcessorStateImpl();
+        val paymentUnSuccessfulProcessorStateImpl = PaymentUnSuccessfulProcessorStateImpl()
         assertEquals(
             BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name,
             paymentUnSuccessfulProcessorStateImpl.getStateType()
@@ -29,21 +29,21 @@ class PaymentUnSuccessfulProcessorStateImplTest {
 
         val invoice = createInvoice(InvoiceStatus.PENDING)
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter> {
             every { getInvoice() } returns invoice
         }
 
-        val invoiceService = mockk<InvoiceService>() {
+        val invoiceService = mockk<InvoiceService> {
             every { updateInvoiceStatus(any(), any()) } returns Unit
         }
 
-        val afterStateChangeService = mockk<AfterStateChangeService>() {
+        val afterStateChangeService = mockk<AfterStateChangeService> {
             every { initiate(any()) } returns Unit
         }
         val map = HashMap<String, AfterStateChangeService>()
-        map[BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name] = afterStateChangeService;
+        map[BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name] = afterStateChangeService
 
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
             every { getInvoiceService() } returns invoiceService
             every { getAfterStateChangeService() } returns map
@@ -54,7 +54,7 @@ class PaymentUnSuccessfulProcessorStateImplTest {
             state = BillProcessorFlowState.START_STATE
         )
         billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
-        val paymentUnSuccessfulProcessorStateImpl = PaymentUnSuccessfulProcessorStateImpl();
+        val paymentUnSuccessfulProcessorStateImpl = PaymentUnSuccessfulProcessorStateImpl()
         paymentUnSuccessfulProcessorStateImpl.handleRequest(billingProcessRequest)
 
         verify(exactly = 1) {
@@ -68,21 +68,21 @@ class PaymentUnSuccessfulProcessorStateImplTest {
 
         val invoice = createInvoice(InvoiceStatus.PENDING)
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter> {
             every { getInvoice() } returns invoice
         }
 
-        val invoiceService = mockk<InvoiceService>() {
+        val invoiceService = mockk<InvoiceService> {
             every { updateInvoiceStatus(any(), any()) } returns Unit
         }
 
-        val afterStateChangeService = mockk<AfterStateChangeService>() {
+        val afterStateChangeService = mockk<AfterStateChangeService> {
             every { initiate(any()) } returns Unit
         }
         val map = HashMap<String, AfterStateChangeService>()
-        map[BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name] = afterStateChangeService;
+        map[BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name] = afterStateChangeService
 
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
             every { getInvoiceService() } returns invoiceService
             every { getAfterStateChangeService() } returns map
@@ -93,7 +93,7 @@ class PaymentUnSuccessfulProcessorStateImplTest {
             state = BillProcessorFlowState.START_STATE
         )
         billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
-        val paymentUnSuccessfulProcessorStateImpl = PaymentUnSuccessfulProcessorStateImpl();
+        val paymentUnSuccessfulProcessorStateImpl = PaymentUnSuccessfulProcessorStateImpl()
         paymentUnSuccessfulProcessorStateImpl.handleRequest(billingProcessRequest)
 
         verify(exactly = 1) {
@@ -107,21 +107,21 @@ class PaymentUnSuccessfulProcessorStateImplTest {
 
         val invoice = createInvoice(InvoiceStatus.PENDING)
 
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter>() {
+        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter> {
             every { getInvoice() } returns invoice
         }
 
-        val invoiceService = mockk<InvoiceService>() {
+        val invoiceService = mockk<InvoiceService> {
             every { updateInvoiceStatus(any(), any()) } returns Unit
         }
 
-        val afterStateChangeService = mockk<AfterStateChangeService>() {
+        val afterStateChangeService = mockk<AfterStateChangeService> {
             every { initiate(any()) } returns Unit
         }
         val map = HashMap<String, AfterStateChangeService>()
-        map[BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name] = afterStateChangeService;
+        map[BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name] = afterStateChangeService
 
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
             every { getInvoiceService() } returns invoiceService
             every { getAfterStateChangeService() } returns map
@@ -132,7 +132,7 @@ class PaymentUnSuccessfulProcessorStateImplTest {
             state = BillProcessorFlowState.START_STATE
         )
         billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
-        val paymentUnSuccessfulProcessorStateImpl = PaymentUnSuccessfulProcessorStateImpl();
+        val paymentUnSuccessfulProcessorStateImpl = PaymentUnSuccessfulProcessorStateImpl()
         paymentUnSuccessfulProcessorStateImpl.handleRequest(billingProcessRequest)
 
         verify(exactly = 1) {

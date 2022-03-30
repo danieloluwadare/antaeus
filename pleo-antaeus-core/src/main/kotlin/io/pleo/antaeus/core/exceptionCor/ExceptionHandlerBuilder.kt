@@ -16,18 +16,7 @@ class ExceptionHandlerBuilder {
                 val currentExceptionHandler = sortedList[i]
                 prevExceptionHandler.successor = currentExceptionHandler
             }
-
-//            val customerNotFoundExceptionHandler = CustomerNotFoundExceptionHandler();
-//            val currencyMismatchExceptionHandler = CurrencyMismatchExceptionHandler();
-//            val networkExceptionHandler = NetworkExceptionHandler();
-//            val unKnownErrorExceptionHandler = UnKnownErrorExceptionHandler();
-//
-//            customerNotFoundExceptionHandler.successor = currencyMismatchExceptionHandler;
-//            currencyMismatchExceptionHandler.successor = networkExceptionHandler;
-//            networkExceptionHandler.successor = unKnownErrorExceptionHandler;
-//
-//            return customerNotFoundExceptionHandler;
-            return sortedList[0];
+            return sortedList[0]
 
         }
     }

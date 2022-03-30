@@ -32,10 +32,10 @@ class BillingRequestAdapterImpl(
     }
 
     override fun getAfterStateChangeService(): Map<String, AfterStateChangeService> {
-        return mapOfAfterStateChangeService;
+        return mapOfAfterStateChangeService
     }
 
     override fun getMaximumRetryCount(): Int {
-        return maximumRetryCount;
+        return maximumRetryCount
     }
 }

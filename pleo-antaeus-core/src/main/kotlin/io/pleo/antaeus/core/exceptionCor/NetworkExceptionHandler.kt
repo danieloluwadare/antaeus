@@ -28,6 +28,6 @@ class NetworkExceptionHandler : ExceptionHandler() {
     }
 
     override fun getOrder(): Int {
-        return 3;
+        return 3
     }
 }

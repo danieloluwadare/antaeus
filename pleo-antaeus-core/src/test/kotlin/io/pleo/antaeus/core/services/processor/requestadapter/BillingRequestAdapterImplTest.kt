@@ -23,7 +23,7 @@ class BillingRequestAdapterImplTest {
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
         val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService;
+        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,
@@ -45,7 +45,7 @@ class BillingRequestAdapterImplTest {
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
         val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService;
+        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,
@@ -67,7 +67,7 @@ class BillingRequestAdapterImplTest {
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
         val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService;
+        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,
@@ -89,7 +89,7 @@ class BillingRequestAdapterImplTest {
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
         val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService;
+        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,
@@ -111,7 +111,7 @@ class BillingRequestAdapterImplTest {
         val paymentProvider = mockk<PaymentProvider>()
         val afterStateChangeService = mockk<AfterStateChangeService>()
         val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService;
+        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,

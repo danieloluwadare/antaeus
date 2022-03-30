@@ -15,12 +15,12 @@ class CustomerNotFoundExceptionHandler : ExceptionHandler() {
         request: BillingProcessRequest
     ) {
         if (request.exception is CustomerNotFoundException)
-            logger.error { ">>customer(${request.currentInvoiceProcess.getInvoice().customerId}) not found on payment provider.<<" }
+            logger.error { ">>log customer(${request.currentInvoiceProcess.getInvoice().customerId}) not found on payment provider.<<" }
         else
             successor?.handleException(request)
     }
 
     override fun getOrder(): Int {
-        return 2;
+        return 2
     }
 }

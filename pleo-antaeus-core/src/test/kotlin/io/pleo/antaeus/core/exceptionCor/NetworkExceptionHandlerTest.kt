@@ -24,7 +24,7 @@ internal class NetworkExceptionHandlerTest {
 
         val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice)
 
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
         }
 
@@ -37,7 +37,7 @@ internal class NetworkExceptionHandlerTest {
         val prevCounter = billingProcessRequest.currentInvoiceProcess.getCounter()
 
 
-        val networkExceptionHandler = NetworkExceptionHandler();
+        val networkExceptionHandler = NetworkExceptionHandler()
         networkExceptionHandler.handleException(billingProcessRequest)
 
         assertEquals(prevCounter + 1, billingProcessRequest.currentInvoiceProcess.getCounter())
@@ -51,7 +51,7 @@ internal class NetworkExceptionHandlerTest {
 
         val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice)
 
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
         }
 
@@ -62,7 +62,7 @@ internal class NetworkExceptionHandlerTest {
         billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         billingProcessRequest.exception = NetworkException()
 
-        val networkExceptionHandler = NetworkExceptionHandler();
+        val networkExceptionHandler = NetworkExceptionHandler()
         networkExceptionHandler.handleException(billingProcessRequest)
 
         assertTrue(billingProcessRequest.currentInvoiceProcess.delayNetworkCall())
@@ -76,7 +76,7 @@ internal class NetworkExceptionHandlerTest {
 
         val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice)
 
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
         }
 
@@ -88,7 +88,7 @@ internal class NetworkExceptionHandlerTest {
         billingProcessRequest.exception = NetworkException()
         val prevSizeOfQueue = billingProcessRequest.queue.size
 
-        val networkExceptionHandler = NetworkExceptionHandler();
+        val networkExceptionHandler = NetworkExceptionHandler()
         networkExceptionHandler.handleException(billingProcessRequest)
 
         assertEquals(prevSizeOfQueue + 1, billingProcessRequest.queue.size)

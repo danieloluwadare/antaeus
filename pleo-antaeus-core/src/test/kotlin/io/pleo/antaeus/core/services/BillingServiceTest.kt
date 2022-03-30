@@ -24,18 +24,18 @@ class BillingServiceTest {
 
         val afterStateChangeService = mockk<AfterStateChangeService>()
         val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService;
+        map["test"] = afterStateChangeService
 
         val paymentProvider = mockk<PaymentProvider>()
-        val billingProcessor = mockk<BillingProcessor>() {
+        val billingProcessor = mockk<BillingProcessor> {
             every { process(any()) } returns Unit
 
         }
-        val invoiceService = mockk<InvoiceService>() {
+        val invoiceService = mockk<InvoiceService> {
             every { countInvoiceByStatus(any()) } returns 10
         }
 
-        val batchService = mockk<BatchService>() {
+        val batchService = mockk<BatchService> {
             every { nextBatchExist() } returns true andThen false
             every { getNextBatch() } returns list
             every { setTotalNumberOfRecords(any()) } returns Unit
@@ -66,18 +66,18 @@ class BillingServiceTest {
 
         val afterStateChangeService = mockk<AfterStateChangeService>()
         val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService;
+        map["test"] = afterStateChangeService
 
         val paymentProvider = mockk<PaymentProvider>()
-        val billingProcessor = mockk<BillingProcessor>() {
+        val billingProcessor = mockk<BillingProcessor> {
             every { process(any()) } returns Unit
 
         }
-        val invoiceService = mockk<InvoiceService>() {
+        val invoiceService = mockk<InvoiceService> {
             every { countInvoiceByStatus(any()) } returns 10
         }
 
-        val batchService = mockk<BatchService>() {
+        val batchService = mockk<BatchService> {
             every { nextBatchExist() } returns false
             every { getNextBatch() } returns list
             every { setTotalNumberOfRecords(any()) } returns Unit

@@ -24,7 +24,7 @@ class InvoiceProcessorAdapterImpl(private val invoice: Invoice) : InvoiceProcess
     }
 
     override fun setComplete() {
-        completeStatus = true;
+        completeStatus = true
     }
 
     override fun delayNetworkCall(): Boolean {

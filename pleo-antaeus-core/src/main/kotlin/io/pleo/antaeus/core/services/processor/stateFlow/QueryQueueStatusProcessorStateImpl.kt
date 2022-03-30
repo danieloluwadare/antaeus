@@ -16,7 +16,6 @@ class QueryQueueStatusProcessorStateImpl : ProcessorState {
             request.state = BillProcessorFlowState.STOP_STATE
         else
             request.state = BillProcessorFlowState.START_STATE
-
         logger.info { ">>End QueryQueueStatusProcessorStateImpl<<" }
     }
 }

@@ -15,15 +15,12 @@ class InvoiceBatchServiceImpl(
         //retrieve invoices in batches
         val invoicesList: List<Invoice> =
             invoiceService.fetchInvoiceInBatchesByStatus(lastInvoiceId, limit, InvoiceStatus.PENDING)
-
         //update last invoiceId
         //it will be used for next query
         if (invoicesList.isNotEmpty()) {
             lastInvoiceId = invoicesList.last().id
         }
-
         offset += limit
-
         return invoicesList
     }
 

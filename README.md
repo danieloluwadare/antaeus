@@ -101,3 +101,81 @@ The code given is structured as follows. Feel free however to modify the structu
 * [Sqlite3](https://sqlite.org/index.html) - Database storage engine
 
 Happy hacking 😁!
+
+## My Mantra
+
+"Jeffrey Way always says Get it to green stage then keep refactoring it to make it better and better". This has been one
+of my guiding principles for software development, it gives me the opportunity to get a working solution out and then
+keep building my optimizations on top of that.
+
+### Implementation Overview
+I chose Quartz Scheduler to handle the processing of invoices as it is an open-source job scheduling library that can be integrated within virtually any Java/Kotlin application.
+
+Quartz can be used to create simple or complex schedules for executing tens, hundreds, or even tens-of-thousands of jobs. Quartz offers job scheduling through patterns like cronjobs available in Unix systems. This is a great way of leveraging existing cronjob documentations as a quick guide.
+
+## Design Pattern Implemented
+- Chain of Responsibility (COR)
+- State Design pattern
+- Adapter 
+
+# Algorithm For Processing Invoice
+
+
+### InvoiceBatchServiceImpl Service
+* This service implements the BatchService interface it helps to fetch the invoice in batches.
+  * nextBatchExist() methods checks if the there is any available batch of invoice to be fetched. 
+  * getNextBatch() This fetches the invoices with the limit passed into its constructor
+  * setTotalNumberOfRecords(totalNumberOfRecords) This allows the calling method to set the totalNumber of records available
+
+
+### Billing Service
+
+* initiate() 
+  * This method fetches the invoice in batches and invokes the BillingProcessorImpl to process each Batch
+
+### BillingProcessorImpl Service
+
+- This Service implement the BillingProcessor interface
+- process(requestAdapter: RequestAdapter)
+  - This Service Initializes the state machine
+  - it populates the queue with the invoiceAdapter
+  - keeps processing the invoice adapter until it terminates at the stop state is reached
+
+## List of states
+- All states class implements a common interface called ProcessorState
+- states flow process
+  - StartProcessorStateImpl
+    - This state pull an invoice adapter from the queue 
+    - set the invoice adapter as the current Invoice Process being processed
+    - set the next state to VALIDATE_MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE
+  - ValidateMaximumNumberRetriesExceededProcessorStateImpl
+    - This state check if the current invoice has not exceeded the Maximum Retry Count 
+    - set the next state to either MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE or MAXIMUM_NUMBER_RETRIES_NOT_EXCEEDED_STATE
+  - MaximumNumberRetriesExceededProcessorStateImpl
+    - Updates the status of the current invoice to failed 
+    - invoke the AfterStateChangeService interface
+    - set the next state QUERY_QUEUE_STATUS_STATE
+  - MaximumNumberRetriesNotExceededProcessorStateImpl
+    - set the next state INVOKE_PAYMENT_PROVIDER_STATE
+  - InvokePaymentProviderProcessorStateImpl
+    - Delay Invoking Payment provider call if Invoice has been processed before
+    - Invoke Payment provider and save the response in the request
+    - set the next state to either PAYMENT_SUCCESSFUL_STATE or PAYMENT_UNSUCCESSFUL_STATE or EXCEPTION_ENCOUNTERED_STATE
+  - PaymentSuccessfulProcessorStateImpl
+    - update status of the current invoice to paid
+    - invoke the AfterStateChangeService interface
+    - set the next state QUERY_QUEUE_STATUS_STATE
+  - PaymentUnSuccessfulProcessorStateImpl
+    - update status of the current invoice to failed
+    - invoke the AfterStateChangeService interface
+    - set the next state QUERY_QUEUE_STATUS_STATE
+  - ExceptionEncounteredProcessorStateImpl
+    - invoke the AfterStateChangeService interface(ExceptionEncounteredAfterStateChangeServiceImpl class which in turns calls the ExceptionHandler interface) 
+    - set the next state QUERY_QUEUE_STATUS_STATE
+  - QueryQueueStatusProcessorStateImpl
+    - check if the queue is empty
+    - set the next state to either START_STATE or STOP_STATE
+
+### Assumptions
+- Only one instance of the app will be used in billing the invoices, hence concurrency and related problems were not put
+  into consideration.

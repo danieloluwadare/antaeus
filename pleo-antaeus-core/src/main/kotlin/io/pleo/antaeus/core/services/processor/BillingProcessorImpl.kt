@@ -17,7 +17,7 @@ class BillingProcessorImpl(private val mapOfProcessorState: Map<String, Processo
         while (request.state != BillProcessorFlowState.STOP_STATE) {
             logger.info { ">> CURRENT STATE ==>==> (${request.state}).<<" }
             val state = mapOfProcessorState[request.state.name]
-            state?.handleRequest(request);
+            state?.handleRequest(request)
         }
         logger.info { "Done with Billing Processor" }
     }

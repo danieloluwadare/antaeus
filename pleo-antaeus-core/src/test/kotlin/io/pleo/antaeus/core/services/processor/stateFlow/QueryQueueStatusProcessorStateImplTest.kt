@@ -12,7 +12,7 @@ class QueryQueueStatusProcessorStateImplTest {
 
     @Test
     fun `get Name Equals START_STATE`() {
-        val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl();
+        val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl()
         assertEquals(
             BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE.name,
             queryQueueStatusProcessorStateImpl.getStateType()
@@ -23,14 +23,14 @@ class QueryQueueStatusProcessorStateImplTest {
     fun `when queue is empty next state must be STOP_STATE`() {
         val list = ArrayList<InvoiceProcessorAdapter>()
 
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
         }
         var billingProcessRequest = BillingProcessRequest(
             billingRequestAdapterImpl = requestAdapter,
             state = BillProcessorFlowState.START_STATE
         )
-        val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl();
+        val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl()
         queryQueueStatusProcessorStateImpl.handleRequest(billingProcessRequest)
 
         assertEquals(BillProcessorFlowState.STOP_STATE, billingProcessRequest.state)
@@ -44,14 +44,14 @@ class QueryQueueStatusProcessorStateImplTest {
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
-        val requestAdapter = mockk<RequestAdapter>() {
+        val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
         }
         var billingProcessRequest = BillingProcessRequest(
             billingRequestAdapterImpl = requestAdapter,
             state = BillProcessorFlowState.START_STATE
         )
-        val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl();
+        val queryQueueStatusProcessorStateImpl = QueryQueueStatusProcessorStateImpl()
         queryQueueStatusProcessorStateImpl.handleRequest(billingProcessRequest)
 
         assertEquals(BillProcessorFlowState.START_STATE, billingProcessRequest.state)

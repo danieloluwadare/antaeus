@@ -14,7 +14,7 @@ class AfterStateChangeHandlerFactory {
             list.add(PaymentSuccessfulAfterStateChangeServiceImpl())
             list.add(ExceptionEncounteredAfterStateChangeServiceImpl(exceptionHandler = exceptionHandler))
 
-            val mapOfAfterStateChange = HashMap<String, AfterStateChangeService>();
+            val mapOfAfterStateChange = HashMap<String, AfterStateChangeService>()
             for (afterStateChangeService in list) {
                 mapOfAfterStateChange[afterStateChangeService.getStateType()] = afterStateChangeService
             }

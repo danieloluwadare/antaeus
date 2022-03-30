@@ -5,7 +5,7 @@ class ProcessorStateBuilder {
     companion object {
         fun buildMap(): Map<String, ProcessorState> {
 
-            val list = ArrayList<ProcessorState>();
+            val list = ArrayList<ProcessorState>()
             list.add(StartProcessorStateImpl())
             list.add(ValidateMaximumNumberRetriesExceededProcessorStateImpl())
             list.add(QueryQueueStatusProcessorStateImpl())
@@ -16,7 +16,7 @@ class ProcessorStateBuilder {
             list.add(InvokePaymentProviderProcessorStateImpl())
             list.add(ExceptionEncounteredProcessorStateImpl())
 
-            val mapOfProcessorState = HashMap<String, ProcessorState>();
+            val mapOfProcessorState = HashMap<String, ProcessorState>()
             for (processorState in list) {
                 mapOfProcessorState[processorState.getStateType()] = processorState
             }

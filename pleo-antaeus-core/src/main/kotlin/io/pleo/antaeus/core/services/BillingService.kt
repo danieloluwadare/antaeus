@@ -33,8 +33,8 @@ class BillingService(
                 invoiceService = invoiceService,
                 mapOfAfterStateChangeService = mapOfAfterStateChangeService,
                 maximumRetryCount = 1
-            );
-            billingProcessor.process(requestAdapter);
+            )
+            billingProcessor.process(requestAdapter)
             batchCount++
         }
     }

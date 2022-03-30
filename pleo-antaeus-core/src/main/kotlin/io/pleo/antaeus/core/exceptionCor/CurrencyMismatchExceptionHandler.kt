@@ -22,6 +22,6 @@ class CurrencyMismatchExceptionHandler : ExceptionHandler() {
     }
 
     override fun getOrder(): Int {
-        return 1;
+        return 1
     }
 }
