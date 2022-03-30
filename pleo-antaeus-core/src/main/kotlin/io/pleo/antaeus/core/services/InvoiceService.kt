@@ -26,6 +26,10 @@ class InvoiceService(private val dal: AntaeusDal) {
         return dal.fetchInvoiceInBatchesByStatus(lastInvoiceId, limit, status)
     }
 
+    fun fetchInvoiceByStatus(status: InvoiceStatus): List<Invoice> {
+        return dal.fetchInvoicesByStatus(status)
+    }
+
     fun updateInvoiceStatus(invoiceId: Int, status: InvoiceStatus): Any {
         return dal.updateInvoiceStatus(invoiceId, status)
     }
