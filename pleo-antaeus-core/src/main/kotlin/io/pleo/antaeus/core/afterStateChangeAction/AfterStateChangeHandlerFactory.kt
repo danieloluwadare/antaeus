@@ -4,13 +4,11 @@ import io.pleo.antaeus.core.afterStateChangeAction.AfterStateChangeService
 import io.pleo.antaeus.core.afterStateChangeAction.ExceptionEncounteredAfterStateChangeServiceImpl
 import io.pleo.antaeus.core.afterStateChangeAction.PaymentSuccessfulAfterStateChangeServiceImpl
 import io.pleo.antaeus.core.afterStateChangeAction.PaymentUnSuccessfulAfterStateChangeServiceImpl
-import io.pleo.antaeus.core.services.processor.statechange.ProcessorState
-import java.util.Collections
 
-class AfterStateChangeHandlerBuilder {
+class AfterStateChangeHandlerFactory {
 
     companion object {
-        fun buildChain(exceptionHandler: ExceptionHandler): Map<String, AfterStateChangeService> {
+        fun buildMapOfAfterStateChangeHandlerFactory(exceptionHandler: ExceptionHandler): Map<String, AfterStateChangeService> {
             val list = ArrayList<AfterStateChangeService>()
             list.add(PaymentUnSuccessfulAfterStateChangeServiceImpl())
             list.add(PaymentSuccessfulAfterStateChangeServiceImpl())
