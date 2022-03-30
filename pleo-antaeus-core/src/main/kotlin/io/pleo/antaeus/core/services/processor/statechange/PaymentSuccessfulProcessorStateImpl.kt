@@ -26,6 +26,8 @@ class PaymentSuccessfulProcessorStateImpl : ProcessorState {
         afterStateChangeService?.initiate(request);
         logger.info { "End Invoking afterStateChangeService" }
 
+        request.currentInvoiceProcess.setComplete()
+
         request.state=BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
         logger.info { ">>End PaymentSuccessfulProcessorStateImpl<<" }
     }
