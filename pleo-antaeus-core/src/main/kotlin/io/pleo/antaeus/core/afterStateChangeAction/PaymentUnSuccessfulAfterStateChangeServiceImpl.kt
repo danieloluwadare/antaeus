@@ -3,13 +3,16 @@ package io.pleo.antaeus.core.afterStateChangeAction
 import io.pleo.antaeus.core.cor.ExceptionHandler
 import io.pleo.antaeus.core.services.processor.statechange.BillingProcessRequest
 import io.pleo.antaeus.models.BillProcessorFlowState
+import mu.KotlinLogging
 
-class ExceptionEncounteredAfterStateChangeServiceImpl(private val exceptionHandler: ExceptionHandler) : AfterStateChangeService {
+class PaymentUnSuccessfulAfterStateChangeServiceImpl : AfterStateChangeService {
+    private val logger = KotlinLogging.logger { }
+
     override fun getStateType(): String {
-        return BillProcessorFlowState.EXCEPTION_ENCOUNTERED_STATE.name
+        return BillProcessorFlowState.PAYMENT_UNSUCCESSFUL_STATE.name
     }
 
     override fun initiate(request: BillingProcessRequest) {
-        exceptionHandler.handleException(request)
+        logger.info { "Do anything extra outside the bill processor this help to separate concerns" }
     }
 }
