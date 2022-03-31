@@ -65,21 +65,21 @@ class AntaeusRest(
                         }
 
                         path("failed"){
-                            // URL: /rest/v1/invoices
+                            // URL: /rest/v1/invoices/failed
                             get {
                                 it.json(invoiceService.fetchInvoiceByStatus(InvoiceStatus.FAILED))
                             }
                         }
 
                         path("pending"){
-                            // URL: /rest/v1/invoices
+                            // URL: /rest/v1/invoices/pending
                             get {
                                 it.json(invoiceService.fetchInvoiceByStatus(InvoiceStatus.PENDING))
                             }
                         }
 
                         path("paid"){
-                            // URL: /rest/v1/invoices
+                            // URL: /rest/v1/invoices/paid
                             get {
                                 it.json(invoiceService.fetchInvoiceByStatus(InvoiceStatus.PAID))
                             }
@@ -93,9 +93,11 @@ class AntaeusRest(
                     }
 
                     path("billings") {
-                        // URL: /rest/v1/invoices
-                        get {
-                            it.json(billingService.initiate())
+                        path("initiate"){
+                            // URL: /rest/v1/billings/initiate
+                            get {
+                                it.json(billingService.initiate())
+                            }
                         }
                     }
 

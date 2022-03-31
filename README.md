@@ -121,11 +121,12 @@ Quartz can be used to create simple or complex schedules for executing tens, hun
 # Algorithm For Processing Invoice
 
 
-### InvoiceBatchServiceImpl Service
-* This service implements the BatchService interface it helps to fetch the invoice in batches.
+### BatchService Interface
+- This interface defines the method used to help to fetch invoices in batches.
+  - InvoiceBatchServiceImpl
   * nextBatchExist() methods checks if the there is any available batch of invoice to be fetched. 
   * getNextBatch() This fetches the invoices with the limit passed into its constructor
-  * setTotalNumberOfRecords(totalNumberOfRecords) This allows the calling method to set the totalNumber of records available
+  * setTotalNumberOfRecords(totalNumberOfRecords) This allows the calling method to set the totalNumber of records available which is used by the service to calculate the if there are more batches to be fetched
 
 
 ### Billing Service
@@ -133,16 +134,15 @@ Quartz can be used to create simple or complex schedules for executing tens, hun
 * initiate() 
   * This method fetches the invoice in batches and invokes the BillingProcessorImpl to process each Batch
 
-### BillingProcessorImpl Service
+### BillingProcessor Interface
 
-- This Service implement the BillingProcessor interface
-- process(requestAdapter: RequestAdapter)
-  - This Service Initializes the state machine
-  - it populates the queue with the invoiceAdapter
-  - keeps processing the invoice adapter until it terminates at the stop state is reached
+- This interface helps in processing the invoices 
+  - BillingProcessorImpl 
+    - This Service Initializes the state machine
+    - It populates the queue with the invoiceAdapter
+    - Keeps processing the invoice adapter until it terminates at the stop state is reached
 
-## List of states
-- All states class implements a common interface called ProcessorState
+## ProcessorState Interface
 - states flow process
   - StartProcessorStateImpl
     - This state pull an invoice adapter from the queue 
@@ -176,6 +176,47 @@ Quartz can be used to create simple or complex schedules for executing tens, hun
     - check if the queue is empty
     - set the next state to either START_STATE or STOP_STATE
 
+### AfterStateChangeService Interface
+This interface help with placing logic that are not directly concerned with the Invoice charge flow, but are also necessary, it abstracts such logic from the billing state flow process, making the service more decoupled and easily testable
+  - PaymentSuccessfulAfterStateChangeServiceImpl:
+    - This should contain logic like Email Notification,Notify other services etc.   
+  - PaymentUnSuccessfulAfterStateChangeServiceImpl:
+    - This should contain logic like Email Notification to the necessary customer,Notify other services etc.
+  - ExceptionEncounteredAfterStateChangeServiceImpl:
+    - This initiates the exception handler to handle all exception throw from the ExceptionEncounteredProcessorStateImpl process state
+  
+### ExceptionHandler
+
+*This abstract class defines the abstract method handleException() which major exception handler class implements such as
+  - CustomerNotFoundException:
+    - logic should report such issues to external services like sentry, so that investigation can be carried out on such invoice
+  - UnKnownErrorExceptionHandler
+    - logic should report such issues to external services like sentry
+  - CurrencyMismatchException
+    - logic should report such issues to external services like sentry
+  - NetworkException
+    - This increment the invoice counter, activates the delay network call, and add the invoice back on the queue
+
+This abstract class also have a variable called successor that allows each implementor of this interface to delegate control to the next
+handler.
+
+
+### BillingScheduler Cron
+
+- The BillingJob is the entry point of the cron
+- The BillingScheduler houses the cron configuration (including the config to run the cron on the first of
+  every month). The config can be made more generic such that we can easily add other crons which might be added to the
+  service)
+
+
 ### Assumptions
 - Only one instance of the app will be used in billing the invoices, hence concurrency and related problems were not put
   into consideration.
+
+### Improvements
+- I probably didn't write idiomatic kotlin code, this is something I'm getting better in as I do more Kotlin projects.
+- Retrying is instant, this will not play out in a prod environment, a cool off period to allow systems to recover will be ideal.
+- In the real world, more than two instances of this service would exist for high availability sake and another service acting as the load balancer, with this design, an external cron service would be making a request to the endpoint that is exposed on  [Initiate billing invoice endpoint](http://localhost:7000/rest/v1/billings/initiate)
+### Time Spent
+
+About 10hrs spread over 4-5 days due to availability.
