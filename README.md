@@ -144,6 +144,8 @@ Quartz can be used to create simple or complex schedules for executing tens, hun
 
 ## ProcessorState Interface
 - states flow process
+  
+
   - StartProcessorStateImpl
     - This state pull an invoice adapter from the queue 
     - set the invoice adapter as the current Invoice Process being processed
