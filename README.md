@@ -148,30 +148,52 @@ Quartz can be used to create simple or complex schedules for executing tens, hun
     - This state pull an invoice adapter from the queue 
     - set the invoice adapter as the current Invoice Process being processed
     - set the next state to VALIDATE_MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE
+
+
   - ValidateMaximumNumberRetriesExceededProcessorStateImpl
     - This state check if the current invoice has not exceeded the Maximum Retry Count 
     - set the next state to either MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE or MAXIMUM_NUMBER_RETRIES_NOT_EXCEEDED_STATE
+
+  
   - MaximumNumberRetriesExceededProcessorStateImpl
     - Updates the status of the current invoice to failed 
     - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
+
+
+
   - MaximumNumberRetriesNotExceededProcessorStateImpl
     - set the next state INVOKE_PAYMENT_PROVIDER_STATE
+  
+
+
   - InvokePaymentProviderProcessorStateImpl
     - Delay Invoking Payment provider call if Invoice has been processed before
     - Invoke Payment provider and save the response in the request
     - set the next state to either PAYMENT_SUCCESSFUL_STATE or PAYMENT_UNSUCCESSFUL_STATE or EXCEPTION_ENCOUNTERED_STATE
+  
+
+
   - PaymentSuccessfulProcessorStateImpl
     - update status of the current invoice to paid
     - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
+  
+
+
   - PaymentUnSuccessfulProcessorStateImpl
     - update status of the current invoice to failed
     - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
+  
+
+
   - ExceptionEncounteredProcessorStateImpl
     - invoke the AfterStateChangeService interface(ExceptionEncounteredAfterStateChangeServiceImpl class which in turns calls the ExceptionHandler interface) 
     - set the next state QUERY_QUEUE_STATUS_STATE
+  
+
+
   - QueryQueueStatusProcessorStateImpl
     - check if the queue is empty
     - set the next state to either START_STATE or STOP_STATE
