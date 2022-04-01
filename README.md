@@ -132,20 +132,20 @@ leveraging existing cronjob documentations as a quick guide.
 - This interface defines extra methods for one to add more properties to the invoice without directly altering the
   invoice model.These methods are used by some classes implementing the ProcessorState (
   ValidateMaximumNumberRetriesExceededProcessorStateImpl, InvokePaymentProviderProcessorStateImpl etc)
-- class implementing interface InvoiceProcessorAdapterImpl
+- class implementing this interface InvoiceProcessorAdapterImpl
 
 ### RequestAdapter Interface
 
 - This interface defines extra methods needed by the class that implements the BillingProcessor interface
-- class implementing BillingRequestAdapterImpl
+- class implementing this interface BillingRequestAdapterImpl
 
 ### BatchService Interface
 
 - This interface defines the method used to help to fetch invoices in batches.
     - InvoiceBatchServiceImpl
 
-    * nextBatchExist() methods checks if the there is any available batch of invoice to be fetched.
-    * getNextBatch() This fetches the invoices with the limit passed into its constructor
+    - nextBatchExist() methods checks if the there is any available batch of invoice to be fetched.
+    - getNextBatch() This fetches the invoices with the limit passed into its constructor
 
 ### Billing Service
 
