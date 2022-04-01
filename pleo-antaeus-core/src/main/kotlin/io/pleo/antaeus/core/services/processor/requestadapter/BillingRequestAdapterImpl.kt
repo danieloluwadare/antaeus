@@ -10,12 +10,8 @@ class BillingRequestAdapterImpl(
     private val invoiceService: InvoiceService,
     private val maximumRetryCount: Int
 ) : RequestAdapter {
-    private val invoiceProcessorList = ArrayList<InvoiceProcessorAdapter>()
+    private val  invoiceProcessorList  = invoicesList.map { invoice -> InvoiceProcessorAdapterImpl(invoice = invoice) }
 
-    init {
-        invoicesList
-            .forEach { invoice -> invoiceProcessorList.add(InvoiceProcessorAdapterImpl(invoice = invoice)) }
-    }
 
     override fun getInvoicesProcessorAdapters(): List<InvoiceProcessorAdapter> {
         return invoiceProcessorList
