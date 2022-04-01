@@ -102,7 +102,7 @@ class AntaeusDal(private val db: Database) {
         return transaction(db) {
             //fetch unpaid invoices
             var query = InvoiceTable
-                .select { InvoiceTable.status.eq(status.toString()) }
+                .select { InvoiceTable.status.eq(status.name) }
 
             //if after invoice id is returned, select results after invoice id
             if (lastInvoiceId > 0) {

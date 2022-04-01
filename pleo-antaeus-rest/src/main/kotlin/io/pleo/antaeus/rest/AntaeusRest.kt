@@ -66,7 +66,7 @@ class AntaeusRest(
                         path(":status") {
                             // URL: /rest/v1/invoices/status
                             get {
-                                val status = InvoiceStatus.valueOf(it.pathParam("status"))
+                                val status = InvoiceStatus.valueOf(it.pathParam("status").toUpperCase())
                                 it.json(invoiceService.fetchInvoiceByStatus(status))
                             }
                         }
@@ -77,6 +77,13 @@ class AntaeusRest(
                             it.json(billingService.charge(invoice))
                         }
 
+                        path("charge/all") {
+                            // URL: /rest/v1/invoices/charge/all
+                            get {
+                                it.json(billingService.charge())
+                            }
+                        }
+
                         // URL: /rest/v1/invoices/{:id}
                         get(":id") {
                             it.json(invoiceService.fetch(it.pathParam("id").toInt()))
@@ -84,14 +91,6 @@ class AntaeusRest(
 
                     }
 
-                    path("billings") {
-                        path("initiate") {
-                            // URL: /rest/v1/billings/initiate
-                            get {
-                                it.json(billingService.charge())
-                            }
-                        }
-                    }
 
                     path("customers") {
                         // URL: /rest/v1/customers

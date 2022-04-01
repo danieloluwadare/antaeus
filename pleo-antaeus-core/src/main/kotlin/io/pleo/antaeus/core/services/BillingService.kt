@@ -4,6 +4,7 @@ import io.pleo.antaeus.core.external.PaymentProvider
 import io.pleo.antaeus.core.services.processor.BillingProcessor
 import io.pleo.antaeus.core.services.processor.requestadapter.BillingRequestAdapterImpl
 import io.pleo.antaeus.models.Invoice
+import io.pleo.antaeus.models.InvoiceStatus
 import mu.KotlinLogging
 
 class BillingService(
@@ -33,6 +34,11 @@ class BillingService(
     }
 
     fun charge(invoice: Invoice){
+        if(invoice.status==InvoiceStatus.PAID){
+            logger.info { ">> invoice of id ==> ${invoice.id} . has already been paid<<" }
+            return
+        }
+
         val listOfInvoice = ArrayList<Invoice>()
         listOfInvoice.add(invoice)
         val requestAdapter = BillingRequestAdapterImpl(
@@ -41,5 +47,6 @@ class BillingService(
             invoiceService = invoiceService,
             maximumRetryCount = 1
         )
+        billingProcessor.process(requestAdapter)
     }
 }
