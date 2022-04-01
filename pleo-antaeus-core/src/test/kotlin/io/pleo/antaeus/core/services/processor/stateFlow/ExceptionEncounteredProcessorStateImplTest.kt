@@ -28,7 +28,7 @@ class ExceptionEncounteredProcessorStateImplTest {
         every { handleException(any())  } returns Unit
     }
 
-    val mapOfExceptionHandler = HashMap<String,ExceptionHandler>()
+    private val mapOfExceptionHandler = HashMap<String,ExceptionHandler>()
 
     @BeforeEach
     internal fun setUp() {

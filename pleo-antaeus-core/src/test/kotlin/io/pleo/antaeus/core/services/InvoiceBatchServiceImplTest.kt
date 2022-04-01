@@ -20,10 +20,10 @@ class InvoiceBatchServiceImplTest {
 
         val invoiceService = mockk<InvoiceService> {
             every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
+            every { countInvoiceByStatus(any()) } returns 100
         }
 
         val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 50)
-//        invoiceBatchServiceImpl.setTotalNumberOfRecords(100)
 
         assertEquals(invoiceList.size, invoiceBatchServiceImpl.getNextBatch().size)
     }
@@ -35,10 +35,10 @@ class InvoiceBatchServiceImplTest {
 
         val invoiceService = mockk<InvoiceService> {
             every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
+            every { countInvoiceByStatus(any()) } returns 100
         }
 
         val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 50)
-//        invoiceBatchServiceImpl.setTotalNumberOfRecords(100)
 
         assertTrue(invoiceBatchServiceImpl.nextBatchExist())
     }
@@ -50,10 +50,10 @@ class InvoiceBatchServiceImplTest {
 
         val invoiceService = mockk<InvoiceService> {
             every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
+            every { countInvoiceByStatus(any()) } returns 10
         }
 
         val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 10)
-//        invoiceBatchServiceImpl.setTotalNumberOfRecords(10)
 
         invoiceBatchServiceImpl.getNextBatch()
         assertFalse(invoiceBatchServiceImpl.nextBatchExist())
