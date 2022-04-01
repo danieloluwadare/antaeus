@@ -31,6 +31,7 @@ class InvokePaymentProviderProcessorStateImplTest {
 
         val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter> {
             every { getInvoice() } returns invoice
+            every { delayNetworkCall() } returns false
         }
 
         val paymentProvider = mockk<PaymentProvider> {
@@ -166,6 +167,7 @@ class InvokePaymentProviderProcessorStateImplTest {
 
         val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter> {
             every { getInvoice() } returns invoice
+            every { delayNetworkCall() } returns false
         }
 
         val customerNotFoundException = CustomerNotFoundException(1)
