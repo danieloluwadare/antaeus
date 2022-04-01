@@ -1,6 +1,5 @@
 package io.pleo.antaeus.core.services
 
-import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapterImpl
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
 

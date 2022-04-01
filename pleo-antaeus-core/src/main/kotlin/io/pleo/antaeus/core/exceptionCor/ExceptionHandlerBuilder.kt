@@ -1,6 +1,5 @@
 package io.pleo.antaeus.core.exceptionCor
 
-import io.pleo.antaeus.core.exceptionCor.*
 import io.pleo.antaeus.core.external.CurrencyConverter
 import io.pleo.antaeus.core.services.CustomerService
 

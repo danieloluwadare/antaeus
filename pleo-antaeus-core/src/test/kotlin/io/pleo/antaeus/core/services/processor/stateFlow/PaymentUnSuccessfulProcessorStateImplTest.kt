@@ -3,7 +3,6 @@ package io.pleo.antaeus.core.services.processor.stateFlow
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import io.pleo.antaeus.core.afterStateChangeAction.AfterStateChangeService
 import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapter
 import io.pleo.antaeus.core.services.processor.requestadapter.RequestAdapter
