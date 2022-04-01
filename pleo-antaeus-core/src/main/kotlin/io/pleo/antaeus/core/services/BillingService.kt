@@ -33,8 +33,8 @@ class BillingService(
         }
     }
 
-    fun charge(invoice: Invoice){
-        if(invoice.status==InvoiceStatus.PAID){
+    fun charge(invoice: Invoice) {
+        if (invoice.status == InvoiceStatus.PAID) {
             logger.info { ">> invoice of id ==> ${invoice.id} . has already been paid<<" }
             return
         }
