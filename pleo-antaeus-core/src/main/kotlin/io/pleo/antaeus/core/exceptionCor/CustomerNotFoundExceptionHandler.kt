@@ -16,7 +16,6 @@ class CustomerNotFoundExceptionHandler : ExceptionHandler() {
     override fun handleException(
         request: BillingProcessRequest
     ) {
-            //Make it Fail
         logger.error { ">>log customer(${request.currentInvoiceProcess.getInvoice().customerId}) not found on payment provider.<<" }
         val invoiceService = request.billingRequestAdapterImpl.getInvoiceService()
         logger.info { "About Update invoice status(${request.currentInvoiceProcess.getInvoice().id}) to Failed." }

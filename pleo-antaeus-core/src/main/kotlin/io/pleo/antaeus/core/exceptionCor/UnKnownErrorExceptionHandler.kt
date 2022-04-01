@@ -2,6 +2,7 @@ package io.pleo.antaeus.core.cor
 
 import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
 import io.pleo.antaeus.models.ExceptionType
+import io.pleo.antaeus.models.InvoiceStatus
 import mu.KotlinLogging
 
 /**
@@ -14,7 +15,11 @@ class UnKnownErrorExceptionHandler : ExceptionHandler() {
         request: BillingProcessRequest
 
     ) {
-        logger.error { "unknown error occurred charging invoice(${request.currentInvoiceProcess.getInvoice().id})" }
+        logger.error { "Log unknown error occurred charging invoice(${request.currentInvoiceProcess.getInvoice().id})" }
+        val invoiceService = request.billingRequestAdapterImpl.getInvoiceService()
+        logger.info { "About Update invoice status(${request.currentInvoiceProcess.getInvoice().id}) to Failed." }
+        invoiceService.updateInvoiceStatus(request.currentInvoiceProcess.getInvoice().id, InvoiceStatus.FAILED)
+        logger.info { "Done Updating invoice status(${request.currentInvoiceProcess.getInvoice().id}) to Failed." }
     }
 
     override fun getExceptionType(): String {
