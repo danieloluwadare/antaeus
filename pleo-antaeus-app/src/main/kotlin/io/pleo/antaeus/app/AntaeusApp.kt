@@ -7,9 +7,8 @@
 
 package io.pleo.antaeus.app
 
-import io.pleo.antaeus.core.cor.AfterStateChangeHandlerFactory
-import io.pleo.antaeus.core.exceptionCor.ExceptionHandlerBuilder
 import io.pleo.antaeus.core.cron.BillingScheduler
+import io.pleo.antaeus.core.exceptionCor.ExceptionHandlerBuilder
 import io.pleo.antaeus.core.external.CurrencyConverterImpl
 import io.pleo.antaeus.core.external.OnePipeMockPaymentProvider
 import io.pleo.antaeus.core.services.BillingService
@@ -75,13 +74,13 @@ fun main() {
     val batchService = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 20)
 
     // Build Chain Of Responsibility of ExceptionsHandler
-    val exceptionHandler = ExceptionHandlerBuilder.buildChain(currencyConverter = currencyConverter, customerService = customerService)
+    val mapOfExceptionHandler = ExceptionHandlerBuilder.buildChain(currencyConverter = currencyConverter, customerService = customerService)
 
     // Build a Map of BillingProcessorState
     val mapOfProcessorState = ProcessorStateBuilder.buildMap()
 
     // Inject Map of ProcessorState into Billing Processor
-    val billingProcessor = BillingProcessorImpl(mapOfProcessorState = mapOfProcessorState)
+    val billingProcessor = BillingProcessorImpl(mapOfProcessorState = mapOfProcessorState, mapOfExceptionHandler = mapOfExceptionHandler)
 
     // This is _your_ billing service to be included where you see fit
     val billingService = BillingService(
