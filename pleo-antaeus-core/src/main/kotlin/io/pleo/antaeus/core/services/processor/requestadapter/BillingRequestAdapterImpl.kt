@@ -9,7 +9,6 @@ class BillingRequestAdapterImpl(
     private val invoicesList: List<Invoice>,
     private val paymentProvider: PaymentProvider,
     private val invoiceService: InvoiceService,
-    private val mapOfAfterStateChangeService: Map<String, AfterStateChangeService>,
     private val maximumRetryCount: Int
 ) : RequestAdapter {
     private val invoiceProcessorList = ArrayList<InvoiceProcessorAdapter>()
@@ -29,10 +28,6 @@ class BillingRequestAdapterImpl(
 
     override fun getInvoiceService(): InvoiceService {
         return invoiceService
-    }
-
-    override fun getAfterStateChangeService(): Map<String, AfterStateChangeService> {
-        return mapOfAfterStateChangeService
     }
 
     override fun getMaximumRetryCount(): Int {

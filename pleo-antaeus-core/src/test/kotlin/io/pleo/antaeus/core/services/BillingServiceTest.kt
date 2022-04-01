@@ -22,10 +22,6 @@ class BillingServiceTest {
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
 
-        val afterStateChangeService = mockk<AfterStateChangeService>()
-        val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService
-
         val paymentProvider = mockk<PaymentProvider>()
         val billingProcessor = mockk<BillingProcessor> {
             every { process(any()) } returns Unit
@@ -43,7 +39,7 @@ class BillingServiceTest {
 
         val billingService = BillingService(
             paymentProvider = paymentProvider, invoiceService = invoiceService,
-            billingProcessor = billingProcessor, mapOfAfterStateChangeService = map, batchService = batchService
+            billingProcessor = billingProcessor,  batchService = batchService
         )
 
         billingService.initiate()
@@ -64,10 +60,6 @@ class BillingServiceTest {
         list.add(invoiceProcessorAdapter)
         list.add(invoiceProcessorAdapter)
 
-        val afterStateChangeService = mockk<AfterStateChangeService>()
-        val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService
-
         val paymentProvider = mockk<PaymentProvider>()
         val billingProcessor = mockk<BillingProcessor> {
             every { process(any()) } returns Unit
@@ -85,7 +77,7 @@ class BillingServiceTest {
 
         val billingService = BillingService(
             paymentProvider = paymentProvider, invoiceService = invoiceService,
-            billingProcessor = billingProcessor, mapOfAfterStateChangeService = map, batchService = batchService
+            billingProcessor = billingProcessor,  batchService = batchService
         )
 
         billingService.initiate()

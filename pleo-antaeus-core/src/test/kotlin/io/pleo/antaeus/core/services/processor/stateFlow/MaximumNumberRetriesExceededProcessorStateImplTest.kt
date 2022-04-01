@@ -37,17 +37,10 @@ class MaximumNumberRetriesExceededProcessorStateImplTest {
             every { updateInvoiceStatus(any(), any()) } returns Unit
         }
 
-        val afterStateChangeService = mockk<AfterStateChangeService> {
-            every { initiate(any()) } returns Unit
-        }
-        val map = HashMap<String, AfterStateChangeService>()
-        map[BillProcessorFlowState.MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE.name] = afterStateChangeService
-
         val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
             every { getMaximumRetryCount() } returns 2
             every { getInvoiceService() } returns invoiceService
-            every { getAfterStateChangeService() } returns map
         }
 
         val billingProcessRequest = BillingProcessRequest(
@@ -76,17 +69,10 @@ class MaximumNumberRetriesExceededProcessorStateImplTest {
             every { updateInvoiceStatus(any(), any()) } returns Unit
         }
 
-        val afterStateChangeService = mockk<AfterStateChangeService> {
-            every { initiate(any()) } returns Unit
-        }
-        val map = HashMap<String, AfterStateChangeService>()
-        map[BillProcessorFlowState.MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE.name] = afterStateChangeService
-
         val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
             every { getMaximumRetryCount() } returns 2
             every { getInvoiceService() } returns invoiceService
-            every { getAfterStateChangeService() } returns map
         }
 
         val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)
@@ -115,17 +101,10 @@ class MaximumNumberRetriesExceededProcessorStateImplTest {
             every { updateInvoiceStatus(any(), any()) } returns Unit
         }
 
-        val afterStateChangeService = mockk<AfterStateChangeService> {
-            every { initiate(any()) } returns Unit
-        }
-        val map = HashMap<String, AfterStateChangeService>()
-        map[BillProcessorFlowState.MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE.name] = afterStateChangeService
-
         val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
             every { getMaximumRetryCount() } returns 2
             every { getInvoiceService() } returns invoiceService
-            every { getAfterStateChangeService() } returns map
         }
 
         val billingProcessRequest = BillingProcessRequest(requestAdapter, BillProcessorFlowState.START_STATE)

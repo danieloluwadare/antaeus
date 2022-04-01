@@ -77,10 +77,6 @@ fun main() {
     // Build Chain Of Responsibility of ExceptionsHandler
     val exceptionHandler = ExceptionHandlerBuilder.buildChain(currencyConverter = currencyConverter, customerService = customerService)
 
-    // Build a Map of AfterStateChangeService
-    val mapOfAfterStateChangeService =
-        AfterStateChangeHandlerFactory.build(exceptionHandler = exceptionHandler)
-
     // Build a Map of BillingProcessorState
     val mapOfProcessorState = ProcessorStateBuilder.buildMap()
 
@@ -92,7 +88,6 @@ fun main() {
         paymentProvider = paymentProvider,
         invoiceService = invoiceService,
         billingProcessor = billingProcessor,
-        mapOfAfterStateChangeService = mapOfAfterStateChangeService,
         batchService = batchService
     )
     val billingScheduler = BillingScheduler(billingService)

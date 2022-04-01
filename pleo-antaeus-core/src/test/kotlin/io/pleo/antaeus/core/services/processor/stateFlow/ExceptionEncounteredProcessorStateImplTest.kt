@@ -22,39 +22,6 @@ class ExceptionEncounteredProcessorStateImplTest {
     }
 
     @Test
-    fun ` must invoke afterStateChangeService`() {
-        val list = ArrayList<InvoiceProcessorAdapter>()
-
-        val invoice = createInvoice(InvoiceStatus.PENDING)
-
-        val invoiceProcessorAdapter = mockk<InvoiceProcessorAdapter> {
-            every { getInvoice() } returns invoice
-        }
-        val afterStateChangeService = mockk<AfterStateChangeService> {
-            every { initiate(any()) } returns Unit
-        }
-        val map = HashMap<String, AfterStateChangeService>()
-        map[BillProcessorFlowState.EXCEPTION_ENCOUNTERED_STATE.name] = afterStateChangeService
-
-        val requestAdapter = mockk<RequestAdapter> {
-            every { getInvoicesProcessorAdapters() } returns list
-            every { getAfterStateChangeService() } returns map
-        }
-
-        val billingProcessRequest = BillingProcessRequest(
-            billingRequestAdapterImpl = requestAdapter,
-            state = BillProcessorFlowState.START_STATE
-        )
-        billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
-        val exceptionEncounteredProcessorStateImpl = ExceptionEncounteredProcessorStateImpl()
-        exceptionEncounteredProcessorStateImpl.handleRequest(billingProcessRequest)
-
-        verify(exactly = 1) {
-            afterStateChangeService.initiate(billingProcessRequest)
-        }
-    }
-
-    @Test
     fun ` next state equals QUERY_QUEUE_STATUS_STATE`() {
         val list = ArrayList<InvoiceProcessorAdapter>()
 
@@ -64,15 +31,8 @@ class ExceptionEncounteredProcessorStateImplTest {
             every { getInvoice() } returns invoice
         }
 
-        val afterStateChangeService = mockk<AfterStateChangeService> {
-            every { initiate(any()) } returns Unit
-        }
-        val map = HashMap<String, AfterStateChangeService>()
-        map[BillProcessorFlowState.EXCEPTION_ENCOUNTERED_STATE.name] = afterStateChangeService
-
         val requestAdapter = mockk<RequestAdapter> {
             every { getInvoicesProcessorAdapters() } returns list
-            every { getAfterStateChangeService() } returns map
         }
 
         val billingProcessRequest = BillingProcessRequest(
@@ -83,9 +43,6 @@ class ExceptionEncounteredProcessorStateImplTest {
         val exceptionEncounteredProcessorStateImpl = ExceptionEncounteredProcessorStateImpl()
         exceptionEncounteredProcessorStateImpl.handleRequest(billingProcessRequest)
 
-        verify(exactly = 1) {
-            afterStateChangeService.initiate(billingProcessRequest)
-        }
 
         assertEquals(
             BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE,

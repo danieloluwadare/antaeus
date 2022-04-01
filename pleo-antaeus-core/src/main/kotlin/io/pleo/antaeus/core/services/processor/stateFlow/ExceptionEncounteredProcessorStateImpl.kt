@@ -11,14 +11,14 @@ class ExceptionEncounteredProcessorStateImpl : ProcessorState {
     }
 
     override fun handleRequest(request: BillingProcessRequest) {
-        logger.info { ">>Begin PaymentUnSuccessfulProcessorStateImpl<<" }
-        val mapOfAfterStateChangeService = request.billingRequestAdapterImpl.getAfterStateChangeService()
-        val afterStateChangeService =
-            mapOfAfterStateChangeService[BillProcessorFlowState.EXCEPTION_ENCOUNTERED_STATE.name]
-        logger.info { "About Invoking afterStateChangeService for EXCEPTION_ENCOUNTERED_STATE" }
-        afterStateChangeService?.initiate(request)
-        logger.info { "End Invoking afterStateChangeService" }
-        request.state = BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
-        logger.info { ">>End PaymentUnSuccessfulProcessorStateImpl<<" }
+//        logger.info { ">>Begin PaymentUnSuccessfulProcessorStateImpl<<" }
+//        val mapOfAfterStateChangeService = request.billingRequestAdapterImpl.getAfterStateChangeService()
+//        val afterStateChangeService =
+//            mapOfAfterStateChangeService[BillProcessorFlowState.EXCEPTION_ENCOUNTERED_STATE.name]
+//        logger.info { "About Invoking afterStateChangeService for EXCEPTION_ENCOUNTERED_STATE" }
+//        afterStateChangeService?.initiate(request)
+//        logger.info { "End Invoking afterStateChangeService" }
+//        request.state = BillProcessorFlowState.QUERY_QUEUE_STATUS_STATE
+//        logger.info { ">>End PaymentUnSuccessfulProcessorStateImpl<<" }
     }
 }

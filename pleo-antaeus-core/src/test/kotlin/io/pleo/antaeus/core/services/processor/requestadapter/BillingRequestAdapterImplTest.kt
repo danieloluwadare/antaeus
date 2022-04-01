@@ -1,7 +1,6 @@
 package io.pleo.antaeus.core.services.processor.requestadapter
 
 import io.mockk.mockk
-import io.pleo.antaeus.core.afterStateChangeAction.AfterStateChangeService
 import io.pleo.antaeus.core.external.PaymentProvider
 import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.models.Currency
@@ -21,15 +20,11 @@ class BillingRequestAdapterImplTest {
 
         val invoiceService = mockk<InvoiceService>()
         val paymentProvider = mockk<PaymentProvider>()
-        val afterStateChangeService = mockk<AfterStateChangeService>()
-        val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,
             paymentProvider = paymentProvider,
             invoiceService = invoiceService,
-            mapOfAfterStateChangeService = map,
             maximumRetryCount = 10
         )
 
@@ -43,15 +38,11 @@ class BillingRequestAdapterImplTest {
 
         val invoiceService = mockk<InvoiceService>()
         val paymentProvider = mockk<PaymentProvider>()
-        val afterStateChangeService = mockk<AfterStateChangeService>()
-        val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,
             paymentProvider = paymentProvider,
             invoiceService = invoiceService,
-            mapOfAfterStateChangeService = map,
             maximumRetryCount = 10
         )
 
@@ -65,41 +56,15 @@ class BillingRequestAdapterImplTest {
 
         val invoiceService = mockk<InvoiceService>()
         val paymentProvider = mockk<PaymentProvider>()
-        val afterStateChangeService = mockk<AfterStateChangeService>()
-        val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,
             paymentProvider = paymentProvider,
             invoiceService = invoiceService,
-            mapOfAfterStateChangeService = map,
             maximumRetryCount = 10
         )
 
         assertEquals(paymentProvider, requestAdapterImpl.getPaymentProvider())
-    }
-
-    @Test
-    fun `when afterStateChangeService is passed into the constructor getAfterStateChangeService must equal afterStateChangeService`() {
-        val invoiceList = ArrayList<Invoice>()
-        for (i in 1..10) invoiceList.add(createInvoice(InvoiceStatus.PENDING))
-
-        val invoiceService = mockk<InvoiceService>()
-        val paymentProvider = mockk<PaymentProvider>()
-        val afterStateChangeService = mockk<AfterStateChangeService>()
-        val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService
-
-        val requestAdapterImpl = BillingRequestAdapterImpl(
-            invoicesList = invoiceList,
-            paymentProvider = paymentProvider,
-            invoiceService = invoiceService,
-            mapOfAfterStateChangeService = map,
-            maximumRetryCount = 10
-        )
-
-        assertEquals(map, requestAdapterImpl.getAfterStateChangeService())
     }
 
     @Test
@@ -109,15 +74,11 @@ class BillingRequestAdapterImplTest {
 
         val invoiceService = mockk<InvoiceService>()
         val paymentProvider = mockk<PaymentProvider>()
-        val afterStateChangeService = mockk<AfterStateChangeService>()
-        val map = HashMap<String, AfterStateChangeService>()
-        map["test"] = afterStateChangeService
 
         val requestAdapterImpl = BillingRequestAdapterImpl(
             invoicesList = invoiceList,
             paymentProvider = paymentProvider,
             invoiceService = invoiceService,
-            mapOfAfterStateChangeService = map,
             maximumRetryCount = 10
         )
 

@@ -12,7 +12,6 @@ class BillingService(
     private val paymentProvider: PaymentProvider,
     private val invoiceService: InvoiceService,
     private val billingProcessor: BillingProcessor,
-    private val mapOfAfterStateChangeService: Map<String, AfterStateChangeService>,
     private val batchService : BatchService
 ) {
     private val logger = KotlinLogging.logger { }
@@ -31,7 +30,6 @@ class BillingService(
                 invoicesList = invoicesList,
                 paymentProvider = paymentProvider,
                 invoiceService = invoiceService,
-                mapOfAfterStateChangeService = mapOfAfterStateChangeService,
                 maximumRetryCount = 1
             )
             billingProcessor.process(requestAdapter)
