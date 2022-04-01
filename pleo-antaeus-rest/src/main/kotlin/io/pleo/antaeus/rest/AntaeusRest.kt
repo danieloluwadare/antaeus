@@ -77,6 +77,13 @@ class AntaeusRest(
                             it.json(billingService.charge(invoice))
                         }
 
+                        // URL: /rest/v1/invoices/{:id}/{:status}/charge
+                        post(":id/:status/update") {
+                            val invoice = invoiceService.fetch(it.pathParam("id").toInt())
+                            val status = InvoiceStatus.valueOf(it.pathParam("status").toUpperCase())
+                            it.json(invoiceService.updateInvoiceStatus(invoice.id, status))
+                        }
+
                         path("charge/all") {
                             // URL: /rest/v1/invoices/charge/all
                             get {

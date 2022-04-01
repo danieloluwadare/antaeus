@@ -101,6 +101,7 @@ The code given is structured as follows. Feel free however to modify the structu
 * [Sqlite3](https://sqlite.org/index.html) - Database storage engine
 
 Happy hacking 😁!
+### Solution Overview
 
 ## My Mantra
 
@@ -119,14 +120,21 @@ leveraging existing cronjob documentations as a quick guide.
 
 ## Design Pattern Implemented
 
-- Chain of Responsibility (COR)
+- Factory
 - State Design pattern
 - Adapter
 
 # Algorithm For Processing Invoice
 
-### BatchService Interface
+### InvoiceProcessorAdapter
+- This interface defines extra methods for one to add more properties to the invoice without directly altering the invoice model.These methods are used by some classes implementing the ProcessorState (ValidateMaximumNumberRetriesExceededProcessorStateImpl, InvokePaymentProviderProcessorStateImpl etc)
+- class implementing interface InvoiceProcessorAdapterImpl
 
+### RequestAdapter
+- This interface defines extra methods needed by the class that implements the BillingProcessor interface
+- class implementing BillingRequestAdapterImpl
+
+### BatchService Interface
 - This interface defines the method used to help to fetch invoices in batches.
     - InvoiceBatchServiceImpl
 
@@ -134,16 +142,16 @@ leveraging existing cronjob documentations as a quick guide.
     * getNextBatch() This fetches the invoices with the limit passed into its constructor
 
 ### Billing Service
-
-* initiate()
+* charge()
     * This method fetches the invoice in batches and invokes the BillingProcessorImpl to process each Batch
+* charge(invoice)
+  * This method charges a single invoice
 
 ### BillingProcessor Interface
-
 - This interface helps in processing the invoices
     - BillingProcessorImpl
         - This Service Initializes the state machine
-        - It populates the queue with the invoiceAdapter
+        - It populates the queue with the InvoiceProcessorAdapter
         - Keeps processing the invoice adapter until it terminates at the stop state is reached
 
 ## ProcessorState Interface
@@ -152,7 +160,7 @@ leveraging existing cronjob documentations as a quick guide.
 
 
 - StartProcessorStateImpl
-    - This state pull an invoice adapter from the queue
+    - This state pull an InvoiceProcessorAdapter from the queue
     - set the invoice adapter as the current Invoice Process being processed
     - set the next state to VALIDATE_MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE
 
@@ -164,7 +172,6 @@ leveraging existing cronjob documentations as a quick guide.
 
 - MaximumNumberRetriesExceededProcessorStateImpl
     - Updates the status of the current invoice to failed
-    - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
 
 
@@ -180,19 +187,16 @@ leveraging existing cronjob documentations as a quick guide.
 
 - PaymentSuccessfulProcessorStateImpl
     - update status of the current invoice to paid
-    - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
 
 
 - PaymentUnSuccessfulProcessorStateImpl
     - update status of the current invoice to failed
-    - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
 
 
 - ExceptionEncounteredProcessorStateImpl
-    - invoke the AfterStateChangeService interface(ExceptionEncounteredAfterStateChangeServiceImpl class which in turns
-      calls the ExceptionHandler interface)
+    - get the right exception type and invoke the ExceptionHandler class that handles such exception
     - set the next state QUERY_QUEUE_STATUS_STATE
 
 
@@ -200,19 +204,6 @@ leveraging existing cronjob documentations as a quick guide.
     - check if the queue is empty
     - set the next state to either START_STATE or STOP_STATE
 
-### AfterStateChangeService Interface
-
-This interface help with placing logic that are not directly concerned with the Invoice charge flow, but are also
-necessary, it abstracts such logic from the billing state flow process, making the service more decoupled and easily
-testable
-
-- PaymentSuccessfulAfterStateChangeServiceImpl:
-    - This should contain logic like Email Notification,Notify other services etc.
-- PaymentUnSuccessfulAfterStateChangeServiceImpl:
-    - This should contain logic like Email Notification to the necessary customer,Notify other services etc.
-- ExceptionEncounteredAfterStateChangeServiceImpl:
-    - This initiates the exception handler to handle all exception throw from the ExceptionEncounteredProcessorStateImpl
-      process state
 
 ### ExceptionHandler
 
@@ -220,17 +211,22 @@ testable
 as
 
 - CustomerNotFoundException:
+    - update the invoice to failed
     - logic should report such issues to external services like sentry, so that investigation can be carried out on such
       invoice
 - UnKnownErrorExceptionHandler
-    - logic should report such issues to external services like sentry
+  - update the invoice to failed
+  - logic should report such issues to external services like sentry
 - CurrencyMismatchException
+    - Invokes the CurrencyConverter interface to convert the currency;
+    - Adds the process back to the queue to be re-processed
     - logic should report such issues to external services like sentry
 - NetworkException
-    - This increment the invoice counter, activates the delay network call, and add the invoice back on the queue
+    - This increment the invoice counter
+    - activates the delay network call 
+    - add the invoice back on the queue
 
-This abstract class also have a variable called successor that allows each implementor of this interface to delegate
-control to the next handler.
+`Improvements: for better insight the invoice model can have an extra field, that allows one to update the kind of exception or failure that occured when the exception handler is invoked, before the invoice is persisted.`
 
 ### BillingScheduler Cron
 
@@ -250,8 +246,9 @@ control to the next handler.
   be ideal.
 - In the real world, more than two instances of this service would exist for high availability sake , with this design,
   an external cron service would be making a request to the endpoint that is exposed
-  on  [Initiate billing invoice endpoint](http://localhost:7000/rest/v1/billings/initiate)
-
-### Time Spent
+  on  [Initiate billing invoice endpoint](http://localhost:7000/rest/v1/invoices/charge/all)
+- Added a [charge a single invoice endpoint](http://localhost:7000/rest/v1/invoices/{1}/charge) to charge a single invoice, 
+- Added a [update invoice status endpoint](http://localhost:7000/rest/v1/invoices/{1}/{paid}/update) to update a single invoice, this occurs if the customer performs a manual payment and tender the receipt of payment, the invoice can be updated with endpoint
+- Added a [fetch an invoice by status endpoint](http://localhost:7000/rest/v1/invoices/{pending}) this helps to fetch an invoice by it status
 
 About 10hrs spread over 4-5 days due to availability.
