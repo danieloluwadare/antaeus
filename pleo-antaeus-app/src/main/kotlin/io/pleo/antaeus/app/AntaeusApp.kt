@@ -10,6 +10,7 @@ package io.pleo.antaeus.app
 import io.pleo.antaeus.core.cor.AfterStateChangeHandlerFactory
 import io.pleo.antaeus.core.cor.ExceptionHandlerBuilder
 import io.pleo.antaeus.core.cron.BillingScheduler
+import io.pleo.antaeus.core.external.CurrencyConverterImpl
 import io.pleo.antaeus.core.external.OnePipeMockPaymentProvider
 import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.core.services.CustomerService
@@ -68,12 +69,13 @@ fun main() {
     // Create core services
     val invoiceService = InvoiceService(dal = dal)
     val customerService = CustomerService(dal = dal)
+    val currencyConverter = CurrencyConverterImpl()
 
     // This Service fetch  invoice in batches according to the limit set
     val batchService = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 20)
 
     // Build Chain Of Responsibility of ExceptionsHandler
-    val exceptionHandler = ExceptionHandlerBuilder.buildChain()
+    val exceptionHandler = ExceptionHandlerBuilder.buildChain(currencyConverter = currencyConverter, customerService = customerService)
 
     // Build a Map of AfterStateChangeService
     val mapOfAfterStateChangeService =

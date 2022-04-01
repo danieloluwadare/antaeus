@@ -1,6 +1,5 @@
 package io.pleo.antaeus.core.cor
 
-import io.pleo.antaeus.core.exceptions.CurrencyMismatchException
 import io.pleo.antaeus.core.external.CurrencyConverter
 import io.pleo.antaeus.core.services.CustomerService
 import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapterImpl

@@ -1,18 +1,20 @@
 package io.pleo.antaeus.core.cor
 
 import io.pleo.antaeus.core.afterStateChangeAction.AfterStateChangeService
+import io.pleo.antaeus.core.external.CurrencyConverter
+import io.pleo.antaeus.core.services.CustomerService
 
 class ExceptionHandlerBuilder {
 
     companion object {
-        fun buildChain(): Map<Exception, ExceptionHandler> {
+        fun buildChain( currencyConverter: CurrencyConverter,  customerService: CustomerService): Map<String, ExceptionHandler> {
             val list = ArrayList<ExceptionHandler>()
             list.add(CustomerNotFoundExceptionHandler())
-//            list.add(CurrencyMismatchExceptionHandler())
-//            list.add(NetworkExceptionHandler())
-//            list.add(UnKnownErrorExceptionHandler())
+            list.add(CurrencyMismatchExceptionHandler(currencyConverter =  currencyConverter, customerService = customerService))
+            list.add(NetworkExceptionHandler())
+            list.add(UnKnownErrorExceptionHandler())
 
-            val mapOfExceptionHandler = HashMap<Exception, ExceptionHandler>()
+            val mapOfExceptionHandler = HashMap<String, ExceptionHandler>()
             for (exceptionHandler in list) {
                 mapOfExceptionHandler[exceptionHandler.getExceptionType()] = exceptionHandler
             }
