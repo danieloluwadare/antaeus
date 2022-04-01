@@ -132,12 +132,12 @@ leveraging existing cronjob documentations as a quick guide.
 - This interface defines extra methods for one to add more properties to the invoice without directly altering the
   invoice model.These methods are used by some classes implementing the ProcessorState (
   ValidateMaximumNumberRetriesExceededProcessorStateImpl, InvokePaymentProviderProcessorStateImpl etc)
-- class implementing this interface InvoiceProcessorAdapterImpl
+- class implementing this interface: InvoiceProcessorAdapterImpl
 
 ### RequestAdapter Interface
 
 - This interface defines extra methods needed by the class that implements the BillingProcessor interface
-- class implementing this interface BillingRequestAdapterImpl
+- class implementing this interface: BillingRequestAdapterImpl
 
 ### BatchService Interface
 
