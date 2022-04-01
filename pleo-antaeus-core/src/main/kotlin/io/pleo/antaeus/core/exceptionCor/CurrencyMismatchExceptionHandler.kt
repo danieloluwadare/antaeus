@@ -28,7 +28,9 @@ class CurrencyMismatchExceptionHandler(private val  currencyConverter: CurrencyC
         invoice = invoice.copy(amount = Money(convertedAmount, customer.currency))
         val  invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice = invoice)
         request.currentInvoiceProcess = invoiceProcessorAdapter
+        logger.info { "queue size before adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) ==> ${request.queue.size}." }
         request.queue.add(request.currentInvoiceProcess)
+        logger.info { "queue size after adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) ==> ${request.queue.size}." }
     }
 
     override fun getExceptionType(): String {
