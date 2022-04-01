@@ -9,6 +9,7 @@ import java.util.*
 data class BillingProcessRequest(val billingRequestAdapterImpl: RequestAdapter, var state: BillProcessorFlowState) {
     val queue: Queue<InvoiceProcessorAdapter> = LinkedList<InvoiceProcessorAdapter>()
     var mapOfExceptionHandler: Map<String, ExceptionHandler>? = null
+
     init {
         queue.addAll(billingRequestAdapterImpl.getInvoicesProcessorAdapters())
     }

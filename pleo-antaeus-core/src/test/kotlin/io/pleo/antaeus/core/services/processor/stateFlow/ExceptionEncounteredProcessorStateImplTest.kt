@@ -15,28 +15,29 @@ import java.math.BigDecimal
 
 class ExceptionEncounteredProcessorStateImplTest {
 
-    private val networkExceptionHandler = mockk<ExceptionHandler>(){
-        every { handleException(any())  } returns Unit
+    private val networkExceptionHandler = mockk<ExceptionHandler>() {
+        every { handleException(any()) } returns Unit
     }
-    private val unKnownErrorExceptionHandler = mockk<ExceptionHandler>(){
-        every { handleException(any())  } returns Unit
+    private val unKnownErrorExceptionHandler = mockk<ExceptionHandler>() {
+        every { handleException(any()) } returns Unit
     }
-    private val customerNotFoundExceptionHandler = mockk<ExceptionHandler>(){
-        every { handleException(any())  } returns Unit
+    private val customerNotFoundExceptionHandler = mockk<ExceptionHandler>() {
+        every { handleException(any()) } returns Unit
     }
-    private val currencyMismatchExceptionHandler = mockk<ExceptionHandler>(){
-        every { handleException(any())  } returns Unit
+    private val currencyMismatchExceptionHandler = mockk<ExceptionHandler>() {
+        every { handleException(any()) } returns Unit
     }
 
-    private val mapOfExceptionHandler = HashMap<String,ExceptionHandler>()
+    private val mapOfExceptionHandler = HashMap<String, ExceptionHandler>()
 
     @BeforeEach
     internal fun setUp() {
-        mapOfExceptionHandler[ExceptionType.CURRENCY_MISMATCH.name]=currencyMismatchExceptionHandler
-        mapOfExceptionHandler[ExceptionType.NETWORK.name]=networkExceptionHandler
-        mapOfExceptionHandler[ExceptionType.CUSTOMER_NOT_FOUND.name]=customerNotFoundExceptionHandler
-        mapOfExceptionHandler[ExceptionType.UNKNOWN.name]=unKnownErrorExceptionHandler
+        mapOfExceptionHandler[ExceptionType.CURRENCY_MISMATCH.name] = currencyMismatchExceptionHandler
+        mapOfExceptionHandler[ExceptionType.NETWORK.name] = networkExceptionHandler
+        mapOfExceptionHandler[ExceptionType.CUSTOMER_NOT_FOUND.name] = customerNotFoundExceptionHandler
+        mapOfExceptionHandler[ExceptionType.UNKNOWN.name] = unKnownErrorExceptionHandler
     }
+
     @Test
     fun `get Name Equals PAYMENT_SUCCESSFUL_STATE`() {
         val exceptionEncounteredProcessorStateImpl = ExceptionEncounteredProcessorStateImpl()
@@ -66,7 +67,7 @@ class ExceptionEncounteredProcessorStateImplTest {
         )
         billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         billingProcessRequest.mapOfExceptionHandler = mapOfExceptionHandler
-        billingProcessRequest.exception= NetworkException()
+        billingProcessRequest.exception = NetworkException()
         val exceptionEncounteredProcessorStateImpl = ExceptionEncounteredProcessorStateImpl()
         exceptionEncounteredProcessorStateImpl.handleRequest(billingProcessRequest)
 
@@ -98,7 +99,7 @@ class ExceptionEncounteredProcessorStateImplTest {
 
         billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         billingProcessRequest.mapOfExceptionHandler = mapOfExceptionHandler
-        billingProcessRequest.exception= NetworkException()
+        billingProcessRequest.exception = NetworkException()
 
         val exceptionEncounteredProcessorStateImpl = ExceptionEncounteredProcessorStateImpl()
         exceptionEncounteredProcessorStateImpl.handleRequest(billingProcessRequest)

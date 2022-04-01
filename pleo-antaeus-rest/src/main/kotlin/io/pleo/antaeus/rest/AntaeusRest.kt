@@ -63,33 +63,18 @@ class AntaeusRest(
                             it.json(invoiceService.fetchAll())
                         }
 
-                        path("failed"){
-                            // URL: /rest/v1/invoices/failed
+                        path(":status") {
+                            // URL: /rest/v1/invoices/status
                             get {
-//                                InvoiceStatus.valueOf()
-                                it.json(invoiceService.fetchInvoiceByStatus(InvoiceStatus.FAILED))
+                                val status = InvoiceStatus.valueOf(it.pathParam("status"))
+                                it.json(invoiceService.fetchInvoiceByStatus(status))
                             }
                         }
 
-                        path("pending"){
-                            // URL: /rest/v1/invoices/pending
-                            get {
-                                it.json(invoiceService.fetchInvoiceByStatus(InvoiceStatus.PENDING))
-                            }
-                        }
-
-                        path("paid"){
-                            // URL: /rest/v1/invoices/paid
-                            get {
-                                it.json(invoiceService.fetchInvoiceByStatus(InvoiceStatus.PAID))
-                            }
-                        }
-
-                        //make it a post
                         // URL: /rest/v1/invoices/{:id}/charge
                         post(":id/charge") {
                             val invoice = invoiceService.fetch(it.pathParam("id").toInt())
-//                            it.json(billingService.chargeInvoice(invoice))
+                            it.json(billingService.charge(invoice))
                         }
 
                         // URL: /rest/v1/invoices/{:id}
@@ -100,10 +85,10 @@ class AntaeusRest(
                     }
 
                     path("billings") {
-                        path("initiate"){
+                        path("initiate") {
                             // URL: /rest/v1/billings/initiate
                             get {
-                                it.json(billingService.initiate())
+                                it.json(billingService.charge())
                             }
                         }
                     }

@@ -10,12 +10,12 @@ class BillingService(
     private val paymentProvider: PaymentProvider,
     private val invoiceService: InvoiceService,
     private val billingProcessor: BillingProcessor,
-    private val batchService : BatchService
+    private val batchService: BatchService
 ) {
     private val logger = KotlinLogging.logger { }
 
 
-    fun initiate() {
+    fun charge() {
         var batchCount = 1
         while (batchService.nextBatchExist()) {
             val invoicesList: List<Invoice> = batchService.getNextBatch()
@@ -30,5 +30,16 @@ class BillingService(
             billingProcessor.process(requestAdapter)
             batchCount++
         }
+    }
+
+    fun charge(invoice: Invoice){
+        val listOfInvoice = ArrayList<Invoice>()
+        listOfInvoice.add(invoice)
+        val requestAdapter = BillingRequestAdapterImpl(
+            invoicesList = listOfInvoice,
+            paymentProvider = paymentProvider,
+            invoiceService = invoiceService,
+            maximumRetryCount = 1
+        )
     }
 }

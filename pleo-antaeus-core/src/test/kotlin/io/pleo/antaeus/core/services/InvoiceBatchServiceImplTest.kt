@@ -60,7 +60,6 @@ class InvoiceBatchServiceImplTest {
     }
 
 
-
     private fun createInvoice(status: InvoiceStatus): Invoice {
         return Invoice(
             id = 10,

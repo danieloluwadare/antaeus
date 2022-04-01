@@ -7,6 +7,6 @@ import org.quartz.JobExecutionContext
 class BillingJob : Job {
     override fun execute(context: JobExecutionContext?) {
         val billingService = context?.jobDetail?.jobDataMap?.get("billingService") as BillingService
-        billingService.initiate()
+        billingService.charge()
     }
 }

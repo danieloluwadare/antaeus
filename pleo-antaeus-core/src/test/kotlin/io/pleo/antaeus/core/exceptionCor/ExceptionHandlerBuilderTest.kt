@@ -12,7 +12,7 @@ class ExceptionHandlerBuilderTest {
     private val currencyConverter = mockk<CurrencyConverter>()
     private val customerService = mockk<CustomerService>()
 
-    private val mapOfExceptionHandler = ExceptionHandlerBuilder.buildChain(currencyConverter,customerService)
+    private val mapOfExceptionHandler = ExceptionHandlerBuilder.build(currencyConverter, customerService)
 
 
     @Test

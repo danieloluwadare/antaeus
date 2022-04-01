@@ -7,9 +7,10 @@ class InvoiceBatchServiceImpl(
     private val invoiceService: InvoiceService,
     private var limit: Int = 50
 ) : BatchService {
-    private var total: Int=0
+    private var total: Int = 0
     private var offset: Int = 0
     private var lastInvoiceId: Int = 0
+
     init {
         total = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
     }

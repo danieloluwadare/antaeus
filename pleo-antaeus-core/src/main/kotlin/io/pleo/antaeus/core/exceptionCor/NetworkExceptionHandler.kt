@@ -15,13 +15,12 @@ class NetworkExceptionHandler : ExceptionHandler() {
     override fun handleException(
         request: BillingProcessRequest
     ) {
-            logger.info { "Adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) back to the queue due to network error." }
-            request.currentInvoiceProcess.incrementCounter()
-            request.currentInvoiceProcess.activateDelayNetworkCall()
-            logger.info { "queue size before adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) ==> ${request.queue.size}." }
-            request.queue.add(request.currentInvoiceProcess)
-            logger.info { "queue size after adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) ==> ${request.queue.size}." }
-
+        logger.info { "Adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) back to the queue due to network error." }
+        request.currentInvoiceProcess.incrementCounter()
+        request.currentInvoiceProcess.activateDelayNetworkCall()
+        logger.info { "queue size before adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) ==> ${request.queue.size}." }
+        request.queue.add(request.currentInvoiceProcess)
+        logger.info { "queue size after adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) ==> ${request.queue.size}." }
 
     }
 

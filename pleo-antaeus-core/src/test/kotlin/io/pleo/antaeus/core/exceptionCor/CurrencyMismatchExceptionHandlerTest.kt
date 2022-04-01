@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
-class CurrencyMismatchExceptionHandlerTest{
+class CurrencyMismatchExceptionHandlerTest {
 
     @Test
     fun `queue size must increase`() {
@@ -34,18 +34,19 @@ class CurrencyMismatchExceptionHandlerTest{
         )
 
         val currencyConverter = mockk<CurrencyConverter> {
-            every { convert(any(),any(),any()) } returns BigDecimal.TEN
+            every { convert(any(), any(), any()) } returns BigDecimal.TEN
         }
 
         val customerService = mockk<CustomerService> {
-            every { fetch(any())} returns Customer(1,Currency.EUR)
+            every { fetch(any()) } returns Customer(1, Currency.EUR)
         }
 
         billingProcessRequest.currentInvoiceProcess = invoiceProcessorAdapter
         billingProcessRequest.exception = NetworkException()
         val prevSizeOfQueue = billingProcessRequest.queue.size
 
-        val exceptionHandler = CurrencyMismatchExceptionHandler(currencyConverter=currencyConverter, customerService = customerService)
+        val exceptionHandler =
+            CurrencyMismatchExceptionHandler(currencyConverter = currencyConverter, customerService = customerService)
         exceptionHandler.handleException(billingProcessRequest)
 
         assertEquals(prevSizeOfQueue + 1, billingProcessRequest.queue.size)

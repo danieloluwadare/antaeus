@@ -73,14 +73,16 @@ fun main() {
     // This Service fetch  invoice in batches according to the limit set
     val batchService = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 20)
 
-    // Build Chain Of Responsibility of ExceptionsHandler
-    val mapOfExceptionHandler = ExceptionHandlerBuilder.buildChain(currencyConverter = currencyConverter, customerService = customerService)
+    // Build  ExceptionsHandler
+    val mapOfExceptionHandler =
+        ExceptionHandlerBuilder.build(currencyConverter = currencyConverter, customerService = customerService)
 
     // Build a Map of BillingProcessorState
     val mapOfProcessorState = ProcessorStateBuilder.buildMap()
 
-    // Inject Map of ProcessorState into Billing Processor
-    val billingProcessor = BillingProcessorImpl(mapOfProcessorState = mapOfProcessorState, mapOfExceptionHandler = mapOfExceptionHandler)
+    // Inject Map of ProcessorState, into Billing Processor
+    val billingProcessor =
+        BillingProcessorImpl(mapOfProcessorState = mapOfProcessorState, mapOfExceptionHandler = mapOfExceptionHandler)
 
     // This is _your_ billing service to be included where you see fit
     val billingService = BillingService(

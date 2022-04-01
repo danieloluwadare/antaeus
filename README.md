@@ -109,136 +109,149 @@ of my guiding principles for software development, it gives me the opportunity t
 keep building my optimizations on top of that.
 
 ### Implementation Overview
-I chose Quartz Scheduler to handle the processing of invoices as it is an open-source job scheduling library that can be integrated within virtually any Java/Kotlin application.
 
-Quartz can be used to create simple or complex schedules for executing tens, hundreds, or even tens-of-thousands of jobs. Quartz offers job scheduling through patterns like cronjobs available in Unix systems. This is a great way of leveraging existing cronjob documentations as a quick guide.
+I chose Quartz Scheduler to handle the processing of invoices as it is an open-source job scheduling library that can be
+integrated within virtually any Java/Kotlin application.
+
+Quartz can be used to create simple or complex schedules for executing tens, hundreds, or even tens-of-thousands of
+jobs. Quartz offers job scheduling through patterns like cronjobs available in Unix systems. This is a great way of
+leveraging existing cronjob documentations as a quick guide.
 
 ## Design Pattern Implemented
+
 - Chain of Responsibility (COR)
 - State Design pattern
-- Adapter 
+- Adapter
 
 # Algorithm For Processing Invoice
 
-
 ### BatchService Interface
+
 - This interface defines the method used to help to fetch invoices in batches.
-  - InvoiceBatchServiceImpl
-  * nextBatchExist() methods checks if the there is any available batch of invoice to be fetched. 
-  * getNextBatch() This fetches the invoices with the limit passed into its constructor
+    - InvoiceBatchServiceImpl
+
+    * nextBatchExist() methods checks if the there is any available batch of invoice to be fetched.
+    * getNextBatch() This fetches the invoices with the limit passed into its constructor
 
 ### Billing Service
 
-* initiate() 
-  * This method fetches the invoice in batches and invokes the BillingProcessorImpl to process each Batch
+* initiate()
+    * This method fetches the invoice in batches and invokes the BillingProcessorImpl to process each Batch
 
 ### BillingProcessor Interface
 
-- This interface helps in processing the invoices 
-  - BillingProcessorImpl 
-    - This Service Initializes the state machine
-    - It populates the queue with the invoiceAdapter
-    - Keeps processing the invoice adapter until it terminates at the stop state is reached
+- This interface helps in processing the invoices
+    - BillingProcessorImpl
+        - This Service Initializes the state machine
+        - It populates the queue with the invoiceAdapter
+        - Keeps processing the invoice adapter until it terminates at the stop state is reached
 
 ## ProcessorState Interface
-- states flow process
-  
 
-  - StartProcessorStateImpl
-    - This state pull an invoice adapter from the queue 
+- states flow process
+
+
+- StartProcessorStateImpl
+    - This state pull an invoice adapter from the queue
     - set the invoice adapter as the current Invoice Process being processed
     - set the next state to VALIDATE_MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE
 
 
-  - ValidateMaximumNumberRetriesExceededProcessorStateImpl
-    - This state check if the current invoice has not exceeded the Maximum Retry Count 
+- ValidateMaximumNumberRetriesExceededProcessorStateImpl
+    - This state check if the current invoice has not exceeded the Maximum Retry Count
     - set the next state to either MAXIMUM_NUMBER_RETRIES_EXCEEDED_STATE or MAXIMUM_NUMBER_RETRIES_NOT_EXCEEDED_STATE
 
-  
-  - MaximumNumberRetriesExceededProcessorStateImpl
-    - Updates the status of the current invoice to failed 
+
+- MaximumNumberRetriesExceededProcessorStateImpl
+    - Updates the status of the current invoice to failed
     - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
 
 
-
-  - MaximumNumberRetriesNotExceededProcessorStateImpl
+- MaximumNumberRetriesNotExceededProcessorStateImpl
     - set the next state INVOKE_PAYMENT_PROVIDER_STATE
-  
 
 
-  - InvokePaymentProviderProcessorStateImpl
+- InvokePaymentProviderProcessorStateImpl
     - Delay Invoking Payment provider call if Invoice has been processed before
     - Invoke Payment provider and save the response in the request
     - set the next state to either PAYMENT_SUCCESSFUL_STATE or PAYMENT_UNSUCCESSFUL_STATE or EXCEPTION_ENCOUNTERED_STATE
-  
 
 
-  - PaymentSuccessfulProcessorStateImpl
+- PaymentSuccessfulProcessorStateImpl
     - update status of the current invoice to paid
     - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
-  
 
 
-  - PaymentUnSuccessfulProcessorStateImpl
+- PaymentUnSuccessfulProcessorStateImpl
     - update status of the current invoice to failed
     - invoke the AfterStateChangeService interface
     - set the next state QUERY_QUEUE_STATUS_STATE
-  
 
 
-  - ExceptionEncounteredProcessorStateImpl
-    - invoke the AfterStateChangeService interface(ExceptionEncounteredAfterStateChangeServiceImpl class which in turns calls the ExceptionHandler interface) 
+- ExceptionEncounteredProcessorStateImpl
+    - invoke the AfterStateChangeService interface(ExceptionEncounteredAfterStateChangeServiceImpl class which in turns
+      calls the ExceptionHandler interface)
     - set the next state QUERY_QUEUE_STATUS_STATE
-  
 
 
-  - QueryQueueStatusProcessorStateImpl
+- QueryQueueStatusProcessorStateImpl
     - check if the queue is empty
     - set the next state to either START_STATE or STOP_STATE
 
 ### AfterStateChangeService Interface
-This interface help with placing logic that are not directly concerned with the Invoice charge flow, but are also necessary, it abstracts such logic from the billing state flow process, making the service more decoupled and easily testable
-  - PaymentSuccessfulAfterStateChangeServiceImpl:
-    - This should contain logic like Email Notification,Notify other services etc.   
-  - PaymentUnSuccessfulAfterStateChangeServiceImpl:
+
+This interface help with placing logic that are not directly concerned with the Invoice charge flow, but are also
+necessary, it abstracts such logic from the billing state flow process, making the service more decoupled and easily
+testable
+
+- PaymentSuccessfulAfterStateChangeServiceImpl:
+    - This should contain logic like Email Notification,Notify other services etc.
+- PaymentUnSuccessfulAfterStateChangeServiceImpl:
     - This should contain logic like Email Notification to the necessary customer,Notify other services etc.
-  - ExceptionEncounteredAfterStateChangeServiceImpl:
-    - This initiates the exception handler to handle all exception throw from the ExceptionEncounteredProcessorStateImpl process state
-  
+- ExceptionEncounteredAfterStateChangeServiceImpl:
+    - This initiates the exception handler to handle all exception throw from the ExceptionEncounteredProcessorStateImpl
+      process state
+
 ### ExceptionHandler
 
-*This abstract class defines the abstract method handleException() which major exception handler class implements such as
-  - CustomerNotFoundException:
-    - logic should report such issues to external services like sentry, so that investigation can be carried out on such invoice
-  - UnKnownErrorExceptionHandler
+*This abstract class defines the abstract method handleException() which major exception handler class implements such
+as
+
+- CustomerNotFoundException:
+    - logic should report such issues to external services like sentry, so that investigation can be carried out on such
+      invoice
+- UnKnownErrorExceptionHandler
     - logic should report such issues to external services like sentry
-  - CurrencyMismatchException
+- CurrencyMismatchException
     - logic should report such issues to external services like sentry
-  - NetworkException
+- NetworkException
     - This increment the invoice counter, activates the delay network call, and add the invoice back on the queue
 
-This abstract class also have a variable called successor that allows each implementor of this interface to delegate control to the next
-handler.
-
+This abstract class also have a variable called successor that allows each implementor of this interface to delegate
+control to the next handler.
 
 ### BillingScheduler Cron
 
 - The BillingJob is the entry point of the cron
-- The BillingScheduler houses the cron configuration (including the config to run the cron on the first of
-  every month). The config can be made more generic such that we can easily add other crons which might be added to the
-  service)
-
+- The BillingScheduler houses the cron configuration (including the config to run the cron on the first of every month).
+  The config can be made more generic such that we can easily add other crons which might be added to the service)
 
 ### Assumptions
+
 - Only one instance of the app will be used in billing the invoices, hence concurrency and related problems were not put
   into consideration.
 
 ### Improvements
+
 - I probably didn't write idiomatic kotlin code, this is something I'm getting better in as I do more Kotlin projects.
-- Retrying is instant, this will not play out in a prod environment, a cool off period to allow systems to recover will be ideal.
-- In the real world, more than two instances of this service would exist for high availability sake , with this design, an external cron service would be making a request to the endpoint that is exposed on  [Initiate billing invoice endpoint](http://localhost:7000/rest/v1/billings/initiate)
+- Retrying is instant, this will not play out in a prod environment, a cool off period to allow systems to recover will
+  be ideal.
+- In the real world, more than two instances of this service would exist for high availability sake , with this design,
+  an external cron service would be making a request to the endpoint that is exposed
+  on  [Initiate billing invoice endpoint](http://localhost:7000/rest/v1/billings/initiate)
+
 ### Time Spent
 
 About 10hrs spread over 4-5 days due to availability.

@@ -7,8 +7,10 @@ import io.pleo.antaeus.core.services.processor.stateFlow.ProcessorState
 import io.pleo.antaeus.models.BillProcessorFlowState
 import mu.KotlinLogging
 
-class BillingProcessorImpl(private val mapOfProcessorState: Map<String, ProcessorState>,
-                           private val mapOfExceptionHandler: Map<String, ExceptionHandler>) : BillingProcessor {
+class BillingProcessorImpl(
+    private val mapOfProcessorState: Map<String, ProcessorState>,
+    private val mapOfExceptionHandler: Map<String, ExceptionHandler>
+) : BillingProcessor {
     private val logger = KotlinLogging.logger { }
 
     override fun process(requestAdapter: RequestAdapter) {
@@ -16,7 +18,7 @@ class BillingProcessorImpl(private val mapOfProcessorState: Map<String, Processo
             billingRequestAdapterImpl = requestAdapter,
             state = BillProcessorFlowState.START_STATE
         )
-        request.mapOfExceptionHandler=mapOfExceptionHandler
+        request.mapOfExceptionHandler = mapOfExceptionHandler
         while (request.state != BillProcessorFlowState.STOP_STATE) {
             logger.info { ">> CURRENT STATE ==>==> (${request.state}).<<" }
             val state = mapOfProcessorState[request.state.name]

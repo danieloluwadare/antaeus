@@ -13,19 +13,23 @@ import mu.KotlinLogging
  * is same as customers currency, if this still occurs, then a business rule determines
  * what is done next.
  */
-class CurrencyMismatchExceptionHandler(private val  currencyConverter: CurrencyConverter, private val customerService: CustomerService) : ExceptionHandler() {
+class CurrencyMismatchExceptionHandler(
+    private val currencyConverter: CurrencyConverter,
+    private val customerService: CustomerService
+) : ExceptionHandler() {
     private val logger = KotlinLogging.logger { }
 
     override fun handleException(
         request: BillingProcessRequest
     ) {
         logger.error { "customer(${request.currentInvoiceProcess.getInvoice().customerId}) invoice currency does not match on payment provider." }
-//        Perform a currency conversion and add it to the queue
+//        Perform a currency conversion and add the invoice back to the queue
         var invoice = request.currentInvoiceProcess.getInvoice()
         val customer = customerService.fetch(invoice.customerId)
-        val convertedAmount = currencyConverter.convert(invoice.amount.value, invoice.amount.currency, customer.currency)
+        val convertedAmount =
+            currencyConverter.convert(invoice.amount.value, invoice.amount.currency, customer.currency)
         invoice = invoice.copy(amount = Money(convertedAmount, customer.currency))
-        val  invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice = invoice)
+        val invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice = invoice)
         request.currentInvoiceProcess = invoiceProcessorAdapter
         logger.info { "queue size before adding invoice of id ==> (${request.currentInvoiceProcess.getInvoice().id}) ==> ${request.queue.size}." }
         request.queue.add(request.currentInvoiceProcess)

@@ -38,10 +38,10 @@ class BillingServiceTest {
 
         val billingService = BillingService(
             paymentProvider = paymentProvider, invoiceService = invoiceService,
-            billingProcessor = billingProcessor,  batchService = batchService
+            billingProcessor = billingProcessor, batchService = batchService
         )
 
-        billingService.initiate()
+        billingService.charge()
 
         verify(exactly = 1) {
             billingProcessor.process(any())
@@ -76,10 +76,10 @@ class BillingServiceTest {
 
         val billingService = BillingService(
             paymentProvider = paymentProvider, invoiceService = invoiceService,
-            billingProcessor = billingProcessor,  batchService = batchService
+            billingProcessor = billingProcessor, batchService = batchService
         )
 
-        billingService.initiate()
+        billingService.charge()
 
         verify(exactly = 0) {
             billingProcessor.process(any())
