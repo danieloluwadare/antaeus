@@ -8,7 +8,7 @@
 package io.pleo.antaeus.app
 
 import io.pleo.antaeus.core.cor.AfterStateChangeHandlerFactory
-import io.pleo.antaeus.core.cor.ExceptionHandlerBuilder
+import io.pleo.antaeus.core.exceptionCor.ExceptionHandlerBuilder
 import io.pleo.antaeus.core.cron.BillingScheduler
 import io.pleo.antaeus.core.external.CurrencyConverterImpl
 import io.pleo.antaeus.core.external.OnePipeMockPaymentProvider

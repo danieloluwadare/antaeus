@@ -2,8 +2,6 @@ package io.pleo.antaeus.core.exceptionCor
 
 import io.mockk.every
 import io.mockk.mockk
-import io.pleo.antaeus.core.cor.CurrencyMismatchExceptionHandler
-import io.pleo.antaeus.core.cor.NetworkExceptionHandler
 import io.pleo.antaeus.core.exceptions.NetworkException
 import io.pleo.antaeus.core.external.CurrencyConverter
 import io.pleo.antaeus.core.services.CustomerService

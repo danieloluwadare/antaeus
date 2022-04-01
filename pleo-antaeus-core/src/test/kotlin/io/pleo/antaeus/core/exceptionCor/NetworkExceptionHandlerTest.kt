@@ -2,7 +2,6 @@ package io.pleo.antaeus.core.exceptionCor
 
 import io.mockk.every
 import io.mockk.mockk
-import io.pleo.antaeus.core.cor.NetworkExceptionHandler
 import io.pleo.antaeus.core.exceptions.NetworkException
 import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapter
 import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapterImpl

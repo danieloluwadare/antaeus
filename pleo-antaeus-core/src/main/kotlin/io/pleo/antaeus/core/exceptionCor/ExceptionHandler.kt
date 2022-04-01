@@ -1,4 +1,4 @@
-package io.pleo.antaeus.core.cor
+package io.pleo.antaeus.core.exceptionCor
 
 import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
 

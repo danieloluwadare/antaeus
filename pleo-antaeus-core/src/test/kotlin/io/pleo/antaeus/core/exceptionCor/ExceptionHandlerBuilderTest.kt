@@ -1,7 +1,6 @@
 package io.pleo.antaeus.core.exceptionCor
 
 import io.mockk.mockk
-import io.pleo.antaeus.core.cor.ExceptionHandlerBuilder
 import io.pleo.antaeus.core.external.CurrencyConverter
 import io.pleo.antaeus.core.services.CustomerService
 import io.pleo.antaeus.models.ExceptionType

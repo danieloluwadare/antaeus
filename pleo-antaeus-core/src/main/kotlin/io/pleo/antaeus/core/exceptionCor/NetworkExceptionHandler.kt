@@ -1,6 +1,5 @@
-package io.pleo.antaeus.core.cor
+package io.pleo.antaeus.core.exceptionCor
 
-import io.pleo.antaeus.core.exceptions.NetworkException
 import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
 import io.pleo.antaeus.models.ExceptionType
 import mu.KotlinLogging
