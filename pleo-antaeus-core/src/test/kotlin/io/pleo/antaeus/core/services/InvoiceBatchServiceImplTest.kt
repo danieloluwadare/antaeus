@@ -23,7 +23,7 @@ class InvoiceBatchServiceImplTest {
         }
 
         val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 50)
-        invoiceBatchServiceImpl.setTotalNumberOfRecords(100)
+//        invoiceBatchServiceImpl.setTotalNumberOfRecords(100)
 
         assertEquals(invoiceList.size, invoiceBatchServiceImpl.getNextBatch().size)
     }
@@ -38,7 +38,7 @@ class InvoiceBatchServiceImplTest {
         }
 
         val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 50)
-        invoiceBatchServiceImpl.setTotalNumberOfRecords(100)
+//        invoiceBatchServiceImpl.setTotalNumberOfRecords(100)
 
         assertTrue(invoiceBatchServiceImpl.nextBatchExist())
     }
@@ -53,27 +53,12 @@ class InvoiceBatchServiceImplTest {
         }
 
         val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService, limit = 10)
-        invoiceBatchServiceImpl.setTotalNumberOfRecords(10)
+//        invoiceBatchServiceImpl.setTotalNumberOfRecords(10)
 
         invoiceBatchServiceImpl.getNextBatch()
         assertFalse(invoiceBatchServiceImpl.nextBatchExist())
     }
 
-    @Test
-    fun `when offset is greater than total then nextBatchExist must return false`() {
-        val invoiceList = ArrayList<Invoice>()
-        for (i in 1..12) invoiceList.add(createInvoice(InvoiceStatus.PENDING))
-
-        val invoiceService = mockk<InvoiceService> {
-            every { fetchInvoiceInBatchesByStatus(any(), any(), any()) } returns invoiceList
-        }
-
-        val invoiceBatchServiceImpl = InvoiceBatchServiceImpl(invoiceService = invoiceService,  limit = 10)
-        invoiceBatchServiceImpl.setTotalNumberOfRecords(10)
-
-        invoiceBatchServiceImpl.getNextBatch()
-        assertFalse(invoiceBatchServiceImpl.nextBatchExist())
-    }
 
 
     private fun createInvoice(status: InvoiceStatus): Invoice {

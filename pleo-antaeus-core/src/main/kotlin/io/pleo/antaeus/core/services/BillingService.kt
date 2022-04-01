@@ -19,9 +19,9 @@ class BillingService(
 
 
     fun initiate() {
-        val totalNumberOfRecords: Int = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
-        logger.info { ">> invoices total size ==> (${totalNumberOfRecords}) .<<" }
-        batchService.setTotalNumberOfRecords(totalNumberOfRecords)
+//        val totalNumberOfRecords: Int = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
+//        logger.info { ">> invoices total size ==> (${totalNumberOfRecords}) .<<" }
+//        batchService.setTotalNumberOfRecords(totalNumberOfRecords)
         var batchCount = 1
         while (batchService.nextBatchExist()) {
             val invoicesList: List<Invoice> = batchService.getNextBatch()

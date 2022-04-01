@@ -5,8 +5,7 @@
 package io.pleo.antaeus.rest
 
 import io.javalin.Javalin
-import io.javalin.apibuilder.ApiBuilder.get
-import io.javalin.apibuilder.ApiBuilder.path
+import io.javalin.apibuilder.ApiBuilder.*
 import io.pleo.antaeus.core.exceptions.EntityNotFoundException
 import io.pleo.antaeus.core.services.BillingService
 import io.pleo.antaeus.core.services.CustomerService
@@ -67,6 +66,7 @@ class AntaeusRest(
                         path("failed"){
                             // URL: /rest/v1/invoices/failed
                             get {
+//                                InvoiceStatus.valueOf()
                                 it.json(invoiceService.fetchInvoiceByStatus(InvoiceStatus.FAILED))
                             }
                         }
@@ -83,6 +83,13 @@ class AntaeusRest(
                             get {
                                 it.json(invoiceService.fetchInvoiceByStatus(InvoiceStatus.PAID))
                             }
+                        }
+
+                        //make it a post
+                        // URL: /rest/v1/invoices/{:id}/charge
+                        post(":id/charge") {
+                            val invoice = invoiceService.fetch(it.pathParam("id").toInt())
+//                            it.json(billingService.chargeInvoice(invoice))
                         }
 
                         // URL: /rest/v1/invoices/{:id}

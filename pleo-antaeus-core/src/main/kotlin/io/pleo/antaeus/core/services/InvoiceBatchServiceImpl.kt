@@ -1,5 +1,6 @@
 package io.pleo.antaeus.core.services
 
+import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapterImpl
 import io.pleo.antaeus.models.Invoice
 import io.pleo.antaeus.models.InvoiceStatus
 
@@ -10,6 +11,10 @@ class InvoiceBatchServiceImpl(
     private var total: Int=0
     private var offset: Int = 0
     private var lastInvoiceId: Int = 0
+    init {
+        total = invoiceService.countInvoiceByStatus(InvoiceStatus.PENDING)
+    }
+
 
     override fun getNextBatch(): List<Invoice> {
         //retrieve invoices in batches
@@ -28,7 +33,5 @@ class InvoiceBatchServiceImpl(
         return offset < total
     }
 
-    override fun setTotalNumberOfRecords(totalNumberOfRecords: Int) {
-        total=totalNumberOfRecords
-    }
+
 }

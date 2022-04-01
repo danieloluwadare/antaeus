@@ -2,6 +2,8 @@ package io.pleo.antaeus.core.cor
 
 import io.pleo.antaeus.core.exceptions.CustomerNotFoundException
 import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
+import io.pleo.antaeus.models.ExceptionType
+import io.pleo.antaeus.models.InvoiceStatus
 import mu.KotlinLogging
 
 /**
@@ -14,13 +16,15 @@ class CustomerNotFoundExceptionHandler : ExceptionHandler() {
     override fun handleException(
         request: BillingProcessRequest
     ) {
-        if (request.exception is CustomerNotFoundException)
-            logger.error { ">>log customer(${request.currentInvoiceProcess.getInvoice().customerId}) not found on payment provider.<<" }
-        else
-            successor?.handleException(request)
+            //Make it Fail
+        logger.error { ">>log customer(${request.currentInvoiceProcess.getInvoice().customerId}) not found on payment provider.<<" }
+        val invoiceService = request.billingRequestAdapterImpl.getInvoiceService()
+        logger.info { "About Update invoice status(${request.currentInvoiceProcess.getInvoice().id}) to Failed." }
+        invoiceService.updateInvoiceStatus(request.currentInvoiceProcess.getInvoice().id, InvoiceStatus.FAILED)
+        logger.info { "Done Updating invoice status(${request.currentInvoiceProcess.getInvoice().id}) to Failed." }
     }
 
-    override fun getOrder(): Int {
-        return 2
+    override fun getExceptionType(): String {
+        return ExceptionType.CUSTOMER_NOT_FOUND.name
     }
 }

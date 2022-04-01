@@ -1,23 +1,22 @@
 package io.pleo.antaeus.core.cor
 
+import io.pleo.antaeus.core.afterStateChangeAction.AfterStateChangeService
+
 class ExceptionHandlerBuilder {
 
     companion object {
-        fun buildChain(): ExceptionHandler {
+        fun buildChain(): Map<Exception, ExceptionHandler> {
             val list = ArrayList<ExceptionHandler>()
             list.add(CustomerNotFoundExceptionHandler())
-            list.add(CurrencyMismatchExceptionHandler())
-            list.add(NetworkExceptionHandler())
-            list.add(UnKnownErrorExceptionHandler())
+//            list.add(CurrencyMismatchExceptionHandler())
+//            list.add(NetworkExceptionHandler())
+//            list.add(UnKnownErrorExceptionHandler())
 
-            var sortedList = list.sortedWith(compareBy { it.getOrder() })
-            for (i in 1 until sortedList.size) {
-                val prevExceptionHandler = sortedList[i - 1]
-                val currentExceptionHandler = sortedList[i]
-                prevExceptionHandler.successor = currentExceptionHandler
+            val mapOfExceptionHandler = HashMap<Exception, ExceptionHandler>()
+            for (exceptionHandler in list) {
+                mapOfExceptionHandler[exceptionHandler.getExceptionType()] = exceptionHandler
             }
-            return sortedList[0]
-
+            return mapOfExceptionHandler
         }
     }
 

@@ -126,8 +126,6 @@ Quartz can be used to create simple or complex schedules for executing tens, hun
   - InvoiceBatchServiceImpl
   * nextBatchExist() methods checks if the there is any available batch of invoice to be fetched. 
   * getNextBatch() This fetches the invoices with the limit passed into its constructor
-  * setTotalNumberOfRecords(totalNumberOfRecords) This allows the calling method to set the totalNumber of records available which is used by the service to calculate the if there are more batches to be fetched
-
 
 ### Billing Service
 
@@ -240,7 +238,7 @@ handler.
 ### Improvements
 - I probably didn't write idiomatic kotlin code, this is something I'm getting better in as I do more Kotlin projects.
 - Retrying is instant, this will not play out in a prod environment, a cool off period to allow systems to recover will be ideal.
-- In the real world, more than two instances of this service would exist for high availability sake and another service acting as the load balancer, with this design, an external cron service would be making a request to the endpoint that is exposed on  [Initiate billing invoice endpoint](http://localhost:7000/rest/v1/billings/initiate)
+- In the real world, more than two instances of this service would exist for high availability sake , with this design, an external cron service would be making a request to the endpoint that is exposed on  [Initiate billing invoice endpoint](http://localhost:7000/rest/v1/billings/initiate)
 ### Time Spent
 
 About 10hrs spread over 4-5 days due to availability.

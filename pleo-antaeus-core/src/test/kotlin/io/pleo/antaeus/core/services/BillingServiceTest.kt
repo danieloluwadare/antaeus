@@ -38,7 +38,7 @@ class BillingServiceTest {
         val batchService = mockk<BatchService> {
             every { nextBatchExist() } returns true andThen false
             every { getNextBatch() } returns list
-            every { setTotalNumberOfRecords(any()) } returns Unit
+//            every { setTotalNumberOfRecords(any()) } returns Unit
         }
 
         val billingService = BillingService(
@@ -80,7 +80,7 @@ class BillingServiceTest {
         val batchService = mockk<BatchService> {
             every { nextBatchExist() } returns false
             every { getNextBatch() } returns list
-            every { setTotalNumberOfRecords(any()) } returns Unit
+//            every { setTotalNumberOfRecords(any()) } returns Unit
         }
 
         val billingService = BillingService(

@@ -1,7 +1,12 @@
 package io.pleo.antaeus.core.cor
 
 import io.pleo.antaeus.core.exceptions.CurrencyMismatchException
+import io.pleo.antaeus.core.external.CurrencyConverter
+import io.pleo.antaeus.core.services.CustomerService
+import io.pleo.antaeus.core.services.processor.requestadapter.InvoiceProcessorAdapterImpl
 import io.pleo.antaeus.core.services.processor.stateFlow.BillingProcessRequest
+import io.pleo.antaeus.models.ExceptionType
+import io.pleo.antaeus.models.Money
 import mu.KotlinLogging
 
 /**
@@ -9,19 +14,24 @@ import mu.KotlinLogging
  * is same as customers currency, if this still occurs, then a business rule determines
  * what is done next.
  */
-class CurrencyMismatchExceptionHandler : ExceptionHandler() {
+class CurrencyMismatchExceptionHandler(private val  currencyConverter: CurrencyConverter, private val customerService: CustomerService) : ExceptionHandler() {
     private val logger = KotlinLogging.logger { }
 
     override fun handleException(
         request: BillingProcessRequest
     ) {
-        if (request.exception is CurrencyMismatchException)
-            logger.error { "customer(${request.currentInvoiceProcess.getInvoice().customerId}) invoice currency does not match on payment provider." }
-        else
-            successor?.handleException(request)
+        logger.error { "customer(${request.currentInvoiceProcess.getInvoice().customerId}) invoice currency does not match on payment provider." }
+//        Perform a currency conversion and add it to the queue
+        var invoice = request.currentInvoiceProcess.getInvoice()
+        val customer = customerService.fetch(invoice.customerId)
+        val convertedAmount = currencyConverter.convert(invoice.amount.value, invoice.amount.currency, customer.currency)
+        invoice = invoice.copy(amount = Money(convertedAmount, customer.currency))
+        val  invoiceProcessorAdapter = InvoiceProcessorAdapterImpl(invoice = invoice)
+        request.currentInvoiceProcess = invoiceProcessorAdapter
+        request.queue.add(request.currentInvoiceProcess)
     }
 
-    override fun getOrder(): Int {
-        return 1
+    override fun getExceptionType(): String {
+        return ExceptionType.CURRENCY_MISMATCH.name
     }
 }
