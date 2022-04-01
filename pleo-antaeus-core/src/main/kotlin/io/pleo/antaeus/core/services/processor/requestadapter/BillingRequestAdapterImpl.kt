@@ -5,12 +5,12 @@ import io.pleo.antaeus.core.services.InvoiceService
 import io.pleo.antaeus.models.Invoice
 
 class BillingRequestAdapterImpl(
-    private val invoicesList: List<Invoice>,
+    invoicesList: List<Invoice>,
     private val paymentProvider: PaymentProvider,
     private val invoiceService: InvoiceService,
     private val maximumRetryCount: Int
 ) : RequestAdapter {
-    private val  invoiceProcessorList  = invoicesList.map { invoice -> InvoiceProcessorAdapterImpl(invoice = invoice) }
+    private val invoiceProcessorList = invoicesList.map { invoice -> InvoiceProcessorAdapterImpl(invoice = invoice) }
 
 
     override fun getInvoicesProcessorAdapters(): List<InvoiceProcessorAdapter> {
