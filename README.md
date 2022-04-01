@@ -160,7 +160,7 @@ leveraging existing cronjob documentations as a quick guide.
     - BillingProcessorImpl
         - This Service Initializes the state machine
         - It populates the queue with the InvoiceProcessorAdapter
-        - Keeps processing the invoice adapter until it terminates at the stop state is reached
+        - Keeps processing the invoice adapter until stop state is reached, then it terminates.
 
 ## ProcessorState Interface
 
