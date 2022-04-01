@@ -262,4 +262,4 @@ as
 - Added a [fetch an invoice by status endpoint](http://localhost:7000/rest/v1/invoices/{pending}) this helps to fetch an
   invoice by it status
 
-About 10hrs spread over 4-5 days due to availability.
+About 8hrs spread over 4 days due to availability.
