@@ -102,7 +102,7 @@ The code given is structured as follows. Feel free however to modify the structu
 
 Happy hacking 😁!
 
-### Solution Overview
+# Solution Overview
 
 ## My Mantra
 
@@ -127,14 +127,14 @@ leveraging existing cronjob documentations as a quick guide.
 
 # Algorithm For Processing Invoice
 
-### InvoiceProcessorAdapter
+### InvoiceProcessorAdapter Interface
 
 - This interface defines extra methods for one to add more properties to the invoice without directly altering the
   invoice model.These methods are used by some classes implementing the ProcessorState (
   ValidateMaximumNumberRetriesExceededProcessorStateImpl, InvokePaymentProviderProcessorStateImpl etc)
 - class implementing interface InvoiceProcessorAdapterImpl
 
-### RequestAdapter
+### RequestAdapter Interface
 
 - This interface defines extra methods needed by the class that implements the BillingProcessor interface
 - class implementing BillingRequestAdapterImpl
@@ -212,7 +212,7 @@ leveraging existing cronjob documentations as a quick guide.
     - check if the queue is empty
     - set the next state to either START_STATE or STOP_STATE
 
-### ExceptionHandler
+### ExceptionHandler class
 
 *This abstract class defines the abstract method handleException() which major exception handler class implements such
 as
